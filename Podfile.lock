@@ -1,21 +1,46 @@
 PODS:
+  - Realm (1.0.2):
+    - Realm/Headers (= 1.0.2)
+  - Realm/Headers (1.0.2)
+  - RealmSwift (1.0.2):
+    - Realm (= 1.0.2)
   - SwiftyVK (1.3)
 
 DEPENDENCIES:
+  - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
+  - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
   - SwiftyVK (from `https://github.com/WE-St0r/SwiftyVK.git`)
 
 EXTERNAL SOURCES:
+  Realm:
+    :branch: master
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
+  RealmSwift:
+    :branch: master
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
   SwiftyVK:
     :git: https://github.com/WE-St0r/SwiftyVK.git
 
 CHECKOUT OPTIONS:
+  Realm:
+    :commit: 41db543ae102fef9eef133cd4d5bb095eedec697
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
+  RealmSwift:
+    :commit: 41db543ae102fef9eef133cd4d5bb095eedec697
+    :git: https://github.com/realm/realm-cocoa.git
+    :submodules: true
   SwiftyVK:
     :commit: 864c719ae55575b35dcc0045f27891c08766b230
     :git: https://github.com/WE-St0r/SwiftyVK.git
 
 SPEC CHECKSUMS:
+  Realm: 2948cfa3a05b7acc446abc4c124d443df646c8de
+  RealmSwift: 4816c8608630a9a00bba6d726bb30b4bab6dd6bf
   SwiftyVK: 7d6901c718b05e713c825292137d64b40b8a9138
 
-PODFILE CHECKSUM: 7092cee1bd2261e5dd71d4988ab5c3b55733dfcd
+PODFILE CHECKSUM: df32b0488aa83e5452fcf9b76cfe3c5c5d7da74f
 
 COCOAPODS: 1.0.1

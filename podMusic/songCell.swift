@@ -10,8 +10,10 @@ import UIKit
 
 class songCell: UITableViewCell {
     
-    var musicUrl: String?
-    @IBOutlet weak var musicLbl: UILabel!
+    // The following string points on WEB location of the track
+    var trackUrl: String?
+    // Agreement: track is a pair of artist and song on the off-chance
+    @IBOutlet weak var songLbl: UILabel!
     @IBOutlet weak var artistLbl: UILabel!
 
     override func awakeFromNib() {

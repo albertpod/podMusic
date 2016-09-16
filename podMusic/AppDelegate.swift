@@ -7,15 +7,26 @@
 //
 
 import UIKit
+import AVFoundation
+import RealmSwift
+import SwiftyVK
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    let player = AVPlayer()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        print(Realm.Configuration())
+        _ = VKDelegateImpl(window_: window!)
         // Override point for customization after application launch.
+        return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
+        VK.processURL(url: url, options: options)
         return true
     }
 

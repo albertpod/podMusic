@@ -5,8 +5,8 @@ target 'podMusic' do
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
   pod 'SwiftyVK', :git => 'https://github.com/WE-St0r/SwiftyVK.git'
-  pod 'Realm', git: 'git@github.com:realm/realm-cocoa.git', branch: 'master'
-  pod 'RealmSwift', git: 'git@github.com:realm/realm-cocoa.git', branch: 'master'
+  pod 'Realm', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', :submodules => true
+  pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', :submodules => true
   # Pods for podMusic
 
 end

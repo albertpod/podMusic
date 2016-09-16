@@ -36,9 +36,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="vMF-2J-wSF" kind="relationship" relationship="viewControllers" id="V63-bC-Hs3"/>
-                        <segue destination="JFh-4C-M7W" kind="relationship" relationship="viewControllers" id="ssO-NO-ual"/>
                         <segue destination="K9W-su-sr2" kind="relationship" relationship="viewControllers" id="YK6-OF-pa7"/>
+                        <segue destination="JFh-4C-M7W" kind="relationship" relationship="viewControllers" id="ssO-NO-ual"/>
+                        <segue destination="vMF-2J-wSF" kind="relationship" relationship="viewControllers" id="V63-bC-Hs3"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VQD-2o-a5c" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -64,7 +64,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="fF7-0K-veK" id="hm4-ra-u1d">
-                                            <frame key="frameInset" width="375" height="79"/>
+                                            <frame key="frameInset" width="375" height="79.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xB-zO-LGg">
@@ -96,8 +96,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="artistLbl" destination="VTM-1P-hPz" id="PXV-nS-wYC"/>
-                                            <outlet property="musicLbl" destination="9xB-zO-LGg" id="Uk3-Ko-GAW"/>
+                                            <outlet property="artistLbl" destination="VTM-1P-hPz" id="CT7-VV-VM5"/>
+                                            <outlet property="songLbl" destination="9xB-zO-LGg" id="d1V-qB-6uG"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>

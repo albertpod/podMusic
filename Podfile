@@ -1,0 +1,12 @@
+# Uncomment this line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'podMusic' do
+  # Comment this line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+  pod 'SwiftyVK', :git => 'https://github.com/WE-St0r/SwiftyVK.git'
+  pod 'Realm', git: 'git@github.com:realm/realm-cocoa.git', branch: 'master'
+  pod 'RealmSwift', git: 'git@github.com:realm/realm-cocoa.git', branch: 'master'
+  # Pods for podMusic
+
+end

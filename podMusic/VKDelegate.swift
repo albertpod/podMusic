@@ -18,7 +18,7 @@ import SwiftyVK
 
 
 class VKDelegateImpl : VKDelegate {
-    let appID = "5547711"
+    let appID = "5423543"
     let scope = [VK.Scope.messages,.offline,.friends,.wall,.photos,.audio,.video,.docs,.market,.email]
     let window : AnyObject
     

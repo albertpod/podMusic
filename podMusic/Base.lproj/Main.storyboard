@@ -74,9 +74,15 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kbJ-gm-ZsK">
                                                     <state key="normal" title="Play"/>
+                                                    <connections>
+                                                        <action selector="playButton:" destination="K9W-su-sr2" eventType="touchUpInside" id="adW-RE-GqT"/>
+                                                    </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HUE-jy-19B">
                                                     <state key="normal" title="Download"/>
+                                                    <connections>
+                                                        <action selector="downloadButton:" destination="K9W-su-sr2" eventType="touchUpInside" id="tuI-uz-uQY"/>
+                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTM-1P-hPz">
                                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>

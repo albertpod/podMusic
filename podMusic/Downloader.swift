@@ -12,10 +12,10 @@ import RealmSwift
 class Downloader : NSObject, URLSessionDownloadDelegate {
     var url : URL?
     // will be used to do whatever is needed once download is complete
-    var downloaded: cachedMusic
+    var downloaded: CachedMusic
     
-    init(informationCell: songCell) {
-        let temp = cachedMusic()
+    init(informationCell: SongCell) {
+        let temp = CachedMusic()
         temp.artistName = informationCell.artistLbl.text
         temp.songName = informationCell.songLbl.text
         temp.trackPath = ""

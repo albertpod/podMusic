@@ -18,33 +18,13 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     @IBOutlet weak var searchTableView: UITableView!
     var musicData: [[String : String]] = [[:]]
-    var musicNumber = 0
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        getSongs()
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    
+    @IBAction func playButton(_ sender: AnyObject) {
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = searchTableView.dequeueReusableCell(withIdentifier: "SongCell")! as! songCell
-        cell.artistLbl.text = "Name"
-        cell.songLbl.text = "Song"
-        return cell
+    @IBAction func downloadButton(_ sender: AnyObject) {
     }
     
     // allows to get profile's songs from VK if parameters are empty, otherwise it returns specified in params songs
@@ -61,10 +41,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         req.successBlock = {
             response in print("SwiftyVK: searchSong success \n \(response)")
             self.musicData.removeAll()
-            self.musicNumber = response["count"].intValue
-            if (self.musicNumber != 0) {
+            let musicNumber = response["count"].intValue
+            if (musicNumber != 0) {
                 var i = 0
-                while i < self.musicNumber {
+                while i < musicNumber {
                     if response["items"][i, "artist"].stringValue == "" && response["items"][i, "song"].stringValue == "" {
                         break
                     }
@@ -83,6 +63,34 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             error in print("SwiftyVK: searchSong fail \n \(error)")
         }
         req.send()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        getSongs()
+        // Uncomment the following line to preserve selection between presentations
+        // self.clearsSelectionOnViewWillAppear = false
+
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return musicData[0].isEmpty ? 0 : self.musicData.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = searchTableView.dequeueReusableCell(withIdentifier: "SongCell")! as! SongCell
+        cell.artistLbl.text = musicData[(indexPath as NSIndexPath).row]["artist"]
+        cell.songLbl.text = musicData[(indexPath as NSIndexPath).row]["song"]
+        cell.trackUrl = musicData[(indexPath as NSIndexPath).row]["url"]
+        return cell
     }
 
 }

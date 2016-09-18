@@ -9,7 +9,6 @@
 import UIKit
 import SwiftyVK
 import AVFoundation
-import RealmSwift
 
 // number of music to return
 let bound = 100
@@ -19,12 +18,30 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var searchTableView: UITableView!
     var musicData: [[String : String]] = [[:]]
     
-    
-    
-    @IBAction func playButton(_ sender: AnyObject) {
+    func playMusic(_ sender: AnyObject) {
+        let senderCell = TrackCell.getCell(sender, table: searchTableView)
+        if let url = senderCell.trackUrl {
+            // pause if the playButton was pressed on the playing track
+            if podPlayer.currentTrack == url {
+                // FIXME: pause
+                podPlayer.pauseMusic()
+                DispatchQueue.main.async {
+                    senderCell.playButton.setTitle("Play", for: .normal)
+                }
+                return
+            }
+            podPlayer.playMusic(url)
+            DispatchQueue.main.async {
+                senderCell.playButton.setTitle("Playing", for: .normal)
+            }
+        }
     }
     
-    @IBAction func downloadButton(_ sender: AnyObject) {
+    func download(_ sender: AnyObject) {
+        let senderCell = TrackCell.getCell(sender, table: searchTableView)
+        if let url = URL(string: senderCell.trackUrl!) {
+            Downloader(informationCell: senderCell).download(url)
+        }
     }
     
     // allows to get profile's songs from VK if parameters are empty, otherwise it returns specified in params songs
@@ -67,7 +84,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         getSongs()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -86,10 +102,12 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = searchTableView.dequeueReusableCell(withIdentifier: "SongCell")! as! SongCell
+        let cell = searchTableView.dequeueReusableCell(withIdentifier: "TrackCell")! as! TrackCell
         cell.artistLbl.text = musicData[(indexPath as NSIndexPath).row]["artist"]
         cell.songLbl.text = musicData[(indexPath as NSIndexPath).row]["song"]
         cell.trackUrl = musicData[(indexPath as NSIndexPath).row]["url"]
+        cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusic(_:)), for: .touchUpInside)
+        cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
         return cell
     }
 

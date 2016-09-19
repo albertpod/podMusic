@@ -86,7 +86,7 @@ class APIWorker {
         req.errorBlock = {error in print("SwiftyVK: friendsGet fail \n \(error)")}
         req.send()
         
-        VK.API.custom(method: "users.get", parameters: [VK.Arg.userId : "1"])
+        //VK.API.custom(method: "users.get", parameters: [VK.Arg.userId : "1"])
     }
     
     

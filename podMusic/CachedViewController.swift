@@ -16,23 +16,30 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var previousCell: TrackCell?
     
     // FIXME: badSolution - copy-past
-    func playMusic(_ sender: AnyObject) {
+    func playMusicButton(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: cachedTableView)
-        if let url = senderCell.trackUrl {
-            // pause if the playButton was pressed on the playing track
-            if podPlayer.currentTrack == url {
-                // FIXME: pause
+        switch podPlayer.state {
+        case .pause, .stop:
+            podPlayer.playMusic(senderCell.trackUrl)
+            DispatchQueue.main.async {
+                senderCell.playButton.setTitle("Playing", for: .normal)
+            }
+        default:
+            if senderCell != self.previousCell {
+                podPlayer.playMusic(senderCell.trackUrl)
+                senderCell.playButton.setTitle("Playing", for: .normal)
+                self.previousCell?.playButton.setTitle("Play", for: .normal)
+            } else {
                 podPlayer.pauseMusic()
                 DispatchQueue.main.async {
                     senderCell.playButton.setTitle("Play", for: .normal)
                 }
-                return
-            }
-            podPlayer.playMusic(url)
-            DispatchQueue.main.async {
-                senderCell.playButton.setTitle("Playing", for: .normal)
             }
         }
+        if senderCell != self.previousCell {
+            self.previousCell?.playButton.setTitle("Play", for: .normal)
+        }
+        self.previousCell = senderCell
     }
     
     func checkExistingFiles() {
@@ -41,10 +48,11 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let files = try FileManager.default.contentsOfDirectory(atPath: documentsDirectory) as [String]
             for filename in files {
                 let filePath = documentsDirectory + "/" + filename
+                print(filePath)
                 do {
                     let fileDictionary = try FileManager.default.attributesOfItem(atPath: filePath)
                     let size = fileDictionary[FileAttributeKey.size]
-                    print ("\(size)")
+                    print ("Size is \(size)")
                 } catch {
                     print("File manager error")
                 }
@@ -68,9 +76,10 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        DispatchQueue.main.async(execute: {
+
+        /*DispatchQueue.main.async(execute: {
             self.cachedTableView.reloadData()
-        })
+        })*/
     }
 
     override func didReceiveMemoryWarning() {
@@ -86,12 +95,14 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = cachedTableView.dequeueReusableCell(withIdentifier: "CachedMusicCell")! as! TrackCell
+        let cell = cachedTableView.dequeueReusableCell(withIdentifier: "CachedCell")! as! TrackCell
         if !musicData.isEmpty {
+            print((indexPath as NSIndexPath).row, musicData[(indexPath as NSIndexPath).row]["song"])
             cell.songLbl.text = musicData[(indexPath as NSIndexPath).row]["song"]
             cell.artistLbl.text = musicData[(indexPath as NSIndexPath).row]["artist"]
             cell.trackUrl = musicData[(indexPath as NSIndexPath).row]["path"]!
-            cell.playButton.addTarget(self, action: #selector(CachedViewController.playMusic(_:)), for: .touchUpInside)
+            print(cell.trackUrl)
+            cell.playButton.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
         }
         return cell
     }

@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -19,39 +20,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81B-3j-SWK">
-                                <frame key="frameInset" minX="47" minY="115" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="81B-3j-SWK">
                                 <state key="normal" title="Play"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-4y-ca6">
-                                <frame key="frameInset" minX="282" minY="115" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y4M-4y-ca6">
                                 <state key="normal" title="Stop"/>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAm-45-eVU">
-                                <frame key="frameInset" minX="166" minY="63" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAm-45-eVU">
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIJ-Sp-JjQ">
-                                <frame key="frameInset" minX="166" minY="84" width="42" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vIJ-Sp-JjQ">
                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ffa-xK-ssQ">
-                                <frame key="frameInset" minX="159" minY="156" width="56" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ffa-xK-ssQ">
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="EAm-45-eVU" firstAttribute="centerX" secondItem="sl9-QH-NG4" secondAttribute="centerX" id="75I-K2-IKN"/>
+                            <constraint firstItem="ffa-xK-ssQ" firstAttribute="top" secondItem="AmH-9u-bNd" secondAttribute="bottom" constant="136" id="DSp-oK-HsL"/>
+                            <constraint firstItem="Y4M-4y-ca6" firstAttribute="top" secondItem="AmH-9u-bNd" secondAttribute="bottom" constant="95" id="Dq9-jS-cIB"/>
+                            <constraint firstItem="vIJ-Sp-JjQ" firstAttribute="centerX" secondItem="sl9-QH-NG4" secondAttribute="centerX" id="Kd9-DX-5vE"/>
+                            <constraint firstItem="EAm-45-eVU" firstAttribute="top" secondItem="AmH-9u-bNd" secondAttribute="bottom" constant="43" id="Qes-mY-cSC"/>
+                            <constraint firstItem="vIJ-Sp-JjQ" firstAttribute="top" secondItem="AmH-9u-bNd" secondAttribute="bottom" constant="64" id="gn5-TM-wWe"/>
+                            <constraint firstItem="81B-3j-SWK" firstAttribute="leading" secondItem="sl9-QH-NG4" secondAttribute="leadingMargin" constant="31" id="kuz-Rf-MgE"/>
+                            <constraint firstItem="81B-3j-SWK" firstAttribute="top" secondItem="AmH-9u-bNd" secondAttribute="bottom" constant="95" id="pwI-Lo-984"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Y4M-4y-ca6" secondAttribute="trailing" constant="31" id="uwS-56-xk5"/>
+                            <constraint firstItem="ffa-xK-ssQ" firstAttribute="centerX" secondItem="sl9-QH-NG4" secondAttribute="centerX" id="wEa-Zd-805"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="player" id="72D-qs-Zzi"/>
                     <connections>
@@ -63,7 +66,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YbJ-vX-foU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-90.400000000000006" y="837.93103448275872"/>
+            <point key="canvasLocation" x="-90" y="840"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="SJU-kr-u01">
@@ -183,10 +186,12 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="80" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="77s-uh-8Df">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="375" id="9u8-1u-bgl"/>
+                                    <constraint firstAttribute="height" constant="618" id="Nox-cc-9DO"/>
+                                    <constraint firstAttribute="width" constant="375" id="aNv-f1-a0b"/>
+                                    <constraint firstAttribute="width" secondItem="77s-uh-8Df" secondAttribute="height" multiplier="125:206" id="kpS-PM-bSL"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CachedMusicCell" rowHeight="80" id="JPP-a5-l9c" customClass="TrackCell" customModule="podMusic" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CachedCell" rowHeight="80" id="JPP-a5-l9c" customClass="TrackCell" customModule="podMusic" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JPP-a5-l9c" id="KFG-g7-1bt">
@@ -243,9 +248,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="77s-uh-8Df" firstAttribute="top" secondItem="usn-oI-cef" secondAttribute="top" id="k84-7J-1MS"/>
-                            <constraint firstItem="77s-uh-8Df" firstAttribute="leading" secondItem="usn-oI-cef" secondAttribute="leading" id="ki6-AY-lG4"/>
-                            <constraint firstItem="77s-uh-8Df" firstAttribute="bottom" secondItem="JoP-sW-Rtc" secondAttribute="top" id="oba-bt-Vfi"/>
+                            <constraint firstAttribute="trailing" secondItem="77s-uh-8Df" secondAttribute="trailing" id="D0W-zO-0D4"/>
+                            <constraint firstItem="77s-uh-8Df" firstAttribute="leading" secondItem="usn-oI-cef" secondAttribute="leading" id="ZcC-8K-epP"/>
+                            <constraint firstItem="77s-uh-8Df" firstAttribute="bottom" secondItem="JoP-sW-Rtc" secondAttribute="top" constant="20" id="vLR-b7-wIl"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="cache" id="GKz-R2-KSX"/>

@@ -17,24 +17,33 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     @IBOutlet weak var searchTableView: UITableView!
     var musicData: [[String : String]] = [[:]]
+    var previousCell: TrackCell?
     
-    func playMusic(_ sender: AnyObject) {
+    // FIXME: badSolution - copy-past
+    func playMusicButton(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: searchTableView)
-        if let url = senderCell.trackUrl {
-            // pause if the playButton was pressed on the playing track
-            if podPlayer.currentTrack == url {
-                // FIXME: pause
+        switch podPlayer.state {
+        case .pause, .stop:
+            podPlayer.playMusic(senderCell.trackUrl)
+            DispatchQueue.main.async {
+                senderCell.playButton.setTitle("Playing", for: .normal)
+            }
+        default:
+            if senderCell != self.previousCell {
+                podPlayer.playMusic(senderCell.trackUrl)
+                senderCell.playButton.setTitle("Playing", for: .normal)
+                self.previousCell?.playButton.setTitle("Play", for: .normal)
+            } else {
                 podPlayer.pauseMusic()
                 DispatchQueue.main.async {
                     senderCell.playButton.setTitle("Play", for: .normal)
                 }
-                return
-            }
-            podPlayer.playMusic(url)
-            DispatchQueue.main.async {
-                senderCell.playButton.setTitle("Playing", for: .normal)
             }
         }
+        if senderCell != self.previousCell {
+            self.previousCell?.playButton.setTitle("Play", for: .normal)
+        }
+        self.previousCell = senderCell
     }
     
     func download(_ sender: AnyObject) {
@@ -106,7 +115,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.artistLbl.text = musicData[(indexPath as NSIndexPath).row]["artist"]
         cell.songLbl.text = musicData[(indexPath as NSIndexPath).row]["song"]
         cell.trackUrl = musicData[(indexPath as NSIndexPath).row]["url"]
-        cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusic(_:)), for: .touchUpInside)
+        cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusicButton(_:)), for: .touchUpInside)
         cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
         return cell
     }

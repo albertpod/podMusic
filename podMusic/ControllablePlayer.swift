@@ -8,6 +8,7 @@
 
 import Foundation
 import AVFoundation
+import RealmSwift
 
 class ControllablePlayer {
     enum State {
@@ -16,18 +17,21 @@ class ControllablePlayer {
         case pause
     }
     
-    var player = AVPlayer()
+    var player = AVQueuePlayer()
+
     // for pause's purposes we have to watch on currentTrack
     var currentTrack = ""
     var state = State.stop
     var time: CMTime?
     
     func playMusic(_ url: String!) {
-        /*player.pause()
-        player.rate = 0.0*/
-        print(url)
-        let playerItem = AVPlayerItem(url: URL(string: url)!)
-        player = AVPlayer(playerItem: playerItem)
+        var temp = url!
+        if (url.range(of: "https") == nil) {
+            let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.absoluteString
+            temp = documentsUrl! + temp
+        }
+        let playerItem = AVPlayerItem(url: URL(string: temp)!)
+        player = AVQueuePlayer(items: [playerItem])
         player.rate = 1.0
         player.play()
         currentTrack = url

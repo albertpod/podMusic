@@ -20,10 +20,12 @@
 		50951D931D8C29E400D2D653 /* APIWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50951D921D8C29E400D2D653 /* APIWorker.swift */; };
 		50951D951D8C2B2600D2D653 /* VKDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50951D941D8C2B2600D2D653 /* VKDelegate.swift */; };
 		50951D971D8C2D6700D2D653 /* CachedMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50951D961D8C2D6700D2D653 /* CachedMusic.swift */; };
-		CD6F8F21F2072EB66909C6AA /* Pods_podMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DE16B2438163A4CDC2D1735 /* Pods_podMusic.framework */; };
+		68D052FCD10CF40A5831DBA2 /* Pods_podMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1492D6A2FC9E0C9920573208 /* Pods_podMusic.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1492D6A2FC9E0C9920573208 /* Pods_podMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_podMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4AD17F3F6779F5DF45FB6C91 /* Pods-podMusic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-podMusic.release.xcconfig"; path = "Pods/Target Support Files/Pods-podMusic/Pods-podMusic.release.xcconfig"; sourceTree = "<group>"; };
 		5006585D1D8CE61700389EA8 /* ControllablePlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControllablePlayer.swift; sourceTree = "<group>"; };
 		500658601D8D264600389EA8 /* CachedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedViewController.swift; sourceTree = "<group>"; };
 		500658621D8D87B100389EA8 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
@@ -39,9 +41,7 @@
 		50951D921D8C29E400D2D653 /* APIWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIWorker.swift; sourceTree = "<group>"; };
 		50951D941D8C2B2600D2D653 /* VKDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VKDelegate.swift; sourceTree = "<group>"; };
 		50951D961D8C2D6700D2D653 /* CachedMusic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedMusic.swift; sourceTree = "<group>"; };
-		8C6B25A5958D55930444549B /* Pods-podMusic.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-podMusic.release.xcconfig"; path = "Pods/Target Support Files/Pods-podMusic/Pods-podMusic.release.xcconfig"; sourceTree = "<group>"; };
-		8DE16B2438163A4CDC2D1735 /* Pods_podMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_podMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FB04B4C7C623B0FA110BFEF6 /* Pods-podMusic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-podMusic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-podMusic/Pods-podMusic.debug.xcconfig"; sourceTree = "<group>"; };
+		CB0FE4FE376DA6AD491AFB75 /* Pods-podMusic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-podMusic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-podMusic/Pods-podMusic.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD6F8F21F2072EB66909C6AA /* Pods_podMusic.framework in Frameworks */,
+				68D052FCD10CF40A5831DBA2 /* Pods_podMusic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +59,7 @@
 		10307123C30BD1EA8136987E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8DE16B2438163A4CDC2D1735 /* Pods_podMusic.framework */,
+				1492D6A2FC9E0C9920573208 /* Pods_podMusic.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -130,8 +130,8 @@
 		AD49662FFFADABED6C5F2F33 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FB04B4C7C623B0FA110BFEF6 /* Pods-podMusic.debug.xcconfig */,
-				8C6B25A5958D55930444549B /* Pods-podMusic.release.xcconfig */,
+				CB0FE4FE376DA6AD491AFB75 /* Pods-podMusic.debug.xcconfig */,
+				4AD17F3F6779F5DF45FB6C91 /* Pods-podMusic.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -226,7 +226,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		7845B75576B9B085C8D736C7 /* [CP] Copy Pods Resources */ = {
@@ -396,9 +396,9 @@
 		};
 		503199031D8B85510051E9CA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB04B4C7C623B0FA110BFEF6 /* Pods-podMusic.debug.xcconfig */;
+			baseConfigurationReference = CB0FE4FE376DA6AD491AFB75 /* Pods-podMusic.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HBAJZASWEW;
 				INFOPLIST_FILE = podMusic/Info.plist;
@@ -411,9 +411,9 @@
 		};
 		503199041D8B85510051E9CA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C6B25A5958D55930444549B /* Pods-podMusic.release.xcconfig */;
+			baseConfigurationReference = 4AD17F3F6779F5DF45FB6C91 /* Pods-podMusic.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HBAJZASWEW;
 				INFOPLIST_FILE = podMusic/Info.plist;

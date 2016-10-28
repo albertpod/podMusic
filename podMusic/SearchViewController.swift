@@ -16,7 +16,6 @@ let bound = 100
 class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var searchTableView: UITableView!
-    var musicData: [[String : String]] = [[:]]
     var previousCell: TrackCell?
     
     // FIXME: badSolution - copy-past
@@ -24,13 +23,13 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let senderCell = TrackCell.getCell(sender, table: searchTableView)
         switch podPlayer.state {
         case .pause, .stop:
-            podPlayer.playMusic(senderCell.trackUrl)
+            podPlayer.playMusic(senderCell)
             DispatchQueue.main.async {
                 senderCell.playButton.setTitle("Playing", for: .normal)
             }
         default:
             if senderCell != self.previousCell {
-                podPlayer.playMusic(senderCell.trackUrl)
+                podPlayer.playMusic(senderCell)
                 senderCell.playButton.setTitle("Playing", for: .normal)
                 self.previousCell?.playButton.setTitle("Play", for: .normal)
             } else {
@@ -66,7 +65,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         req.asynchronous = true
         req.successBlock = {
             response in print("SwiftyVK: searchSong success \n \(response)")
-            self.musicData.removeAll()
+            podPlayer.musicData.removeAll()
             let musicNumber = response["count"].intValue
             if (musicNumber != 0) {
                 var i = 0
@@ -75,14 +74,14 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         break
                     }
                     let entity = ["artist" : response["items"][i, "artist"].stringValue, "song" : response["items"][i, "title"].stringValue, "url" : response["items"][i, "url"].stringValue]
-                    self.musicData.append(entity)
+                    podPlayer.musicData.append(entity)
                     i += 1
                 }
             }
             DispatchQueue.main.async(execute: {
                 self.searchTableView.reloadData()
             })
-            print(self.musicData.count)
+            print(podPlayer.musicData.count)
         }
         //req.description
         req.errorBlock = {
@@ -100,6 +99,10 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        print("will appear")
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -107,14 +110,14 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return musicData[0].isEmpty ? 0 : self.musicData.count
+        return podPlayer.musicData[0].isEmpty ? 0 : podPlayer.musicData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTableView.dequeueReusableCell(withIdentifier: "TrackCell")! as! TrackCell
-        cell.artistLbl.text = musicData[(indexPath as NSIndexPath).row]["artist"]
-        cell.songLbl.text = musicData[(indexPath as NSIndexPath).row]["song"]
-        cell.trackUrl = musicData[(indexPath as NSIndexPath).row]["url"]
+        cell.artistLbl.text = podPlayer.musicData[(indexPath as NSIndexPath).row]["artist"]
+        cell.songLbl.text = podPlayer.musicData[(indexPath as NSIndexPath).row]["song"]
+        cell.trackUrl = podPlayer.musicData[(indexPath as NSIndexPath).row]["url"]
         cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusicButton(_:)), for: .touchUpInside)
         cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
         return cell

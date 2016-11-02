@@ -37,4 +37,21 @@ class TrackCell: UITableViewCell {
         let senderCell = cell as! TrackCell
         return senderCell
     }
+    
+    /* Fill string fields */
+    func completeTrackCell(indexPath: IndexPath, data: [[String : String]]) {
+        self.artistLbl.text = data[(indexPath as NSIndexPath).row]["artist"]
+        self.songLbl.text = data[(indexPath as NSIndexPath).row]["song"]
+        self.trackUrl = data[(indexPath as NSIndexPath).row]["url"]
+        switch podPlayer.state {
+        case .pause, .stop:
+            self.playButton.setTitle("Play", for: .normal)
+        default:
+            if podPlayer.currentTrack?.trackUrl == self.trackUrl {
+                self.playButton.setTitle("Playing", for: .normal)
+            } else {
+                self.playButton.setTitle("Play", for: .normal)
+            }
+        }
+    }
 }

@@ -16,7 +16,11 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func playMusicButton(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: cachedTableView)
-        podPlayer.playMusic(senderCell)
+        if senderCell.trackUrl == podPlayer.currentTrack?.trackUrl {
+            podPlayer.pauseMusic()
+        } else {
+            podPlayer.playMusic(senderCell)
+        }
         self.cachedTableView.reloadData()
     }
     
@@ -39,23 +43,20 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         } catch {
             print(error)
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        podPlayer.musicData.removeAll()
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        podPlayer.musicData.removeAll()
+        
         let realm = try! Realm()
         let data = realm.objects(CachedMusic.self)
         for item in data {
             let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!]
             podPlayer.musicData.append(entity)
         }
-        //self.cachedTableView.reloadData()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        podPlayer.musicData.removeAll()
+        checkExistingFiles()
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
@@ -70,20 +71,8 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = cachedTableView.dequeueReusableCell(withIdentifier: "CachedCell")! as! TrackCell
         if !podPlayer.musicData.isEmpty {
-            cell.songLbl.text = podPlayer.musicData[(indexPath as NSIndexPath).row]["song"]
-            cell.artistLbl.text = podPlayer.musicData[(indexPath as NSIndexPath).row]["artist"]
-            cell.trackUrl = podPlayer.musicData[(indexPath as NSIndexPath).row]["url"]!
+            cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
             cell.playButton.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
-            switch podPlayer.state {
-            case .pause, .stop:
-                cell.playButton.setTitle("Play", for: .normal)
-            default:
-                if podPlayer.currentTrack?.trackUrl == cell.trackUrl {
-                    cell.playButton.setTitle("Playing", for: .normal)
-                } else {
-                    cell.playButton.setTitle("Play", for: .normal)
-                }
-            }
         }
         return cell
     }

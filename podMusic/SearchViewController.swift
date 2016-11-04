@@ -75,9 +75,14 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         req.send()
     }
     
+    func nextTrack(note: NSNotification) {
+        searchTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         getSongs()
+        NotificationCenter.default.addObserver(self, selector: #selector(SearchViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
     }
 
     override func didReceiveMemoryWarning() {

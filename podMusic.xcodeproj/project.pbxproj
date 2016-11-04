@@ -398,7 +398,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CB0FE4FE376DA6AD491AFB75 /* Pods-podMusic.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HBAJZASWEW;
 				INFOPLIST_FILE = podMusic/Info.plist;
@@ -413,7 +413,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4AD17F3F6779F5DF45FB6C91 /* Pods-podMusic.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = HBAJZASWEW;
 				INFOPLIST_FILE = podMusic/Info.plist;

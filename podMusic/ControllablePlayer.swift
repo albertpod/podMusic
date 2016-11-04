@@ -116,7 +116,7 @@ class ControllablePlayer {
             }
             margin = 1
         default:
-            if (currentTrack?.trackPostionInList)! < 0 {
+            if (currentTrack?.trackPostionInList)! == 0 {
                 return
             }
             margin = -1

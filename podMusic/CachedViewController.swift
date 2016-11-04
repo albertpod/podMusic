@@ -52,10 +52,15 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
     }
     
+    func nextTrack(note: NSNotification) {
+        cachedTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         podPlayer.musicData.removeAll()
         checkExistingFiles()
+        NotificationCenter.default.addObserver(self, selector: #selector(CachedViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
         // Do any additional setup after loading the view.
     }
 

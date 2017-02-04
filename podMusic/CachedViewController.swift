@@ -24,6 +24,8 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.cachedTableView.reloadData()
     }
     
+    
+    
     func checkExistingFiles() {
         let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         do {

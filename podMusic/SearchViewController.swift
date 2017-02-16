@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftyVK
+
 import AVFoundation
 
 // number of music to return
@@ -38,7 +38,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     // allows to get profile's songs from VK if parameters are empty, otherwise it returns specified in params songs
-    func getSongs(_ parameters: [VK.Arg : String] = [:]) {
+    /*func getSongs(_ parameters: [VK.Arg : String] = [:]) {
         var req: Request
         if parameters.isEmpty {
             req = VK.API.Audio.get()
@@ -73,7 +73,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             error in print("SwiftyVK: searchSong fail \n \(error)")
         }
         req.send()
-    }
+    }*/
     
     func nextTrack(note: NSNotification) {
         searchTableView.reloadData()
@@ -81,7 +81,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getSongs()
+        //getSongs()
         NotificationCenter.default.addObserver(self, selector: #selector(SearchViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
     }
 
@@ -91,6 +91,9 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if localMusicData.isEmpty {
+            return 0
+        }
         return localMusicData[0].isEmpty ? 0 : localMusicData.count
     }
     

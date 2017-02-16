@@ -9,7 +9,6 @@
 import UIKit
 import AVFoundation
 import RealmSwift
-import SwiftyVK
 
 let podPlayer = ControllablePlayer()
 
@@ -19,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        _ = VKDelegateImpl(window_: window!)
+        //_ = VKDelegateImpl(window_: window!)
         // Override point for customization after application launch.
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayback)
@@ -37,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
-        VK.processURL(url: url, options: options)
+        //VK.processURL(url: url, options: options)
         return true
     }
     

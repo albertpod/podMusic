@@ -24,6 +24,17 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.cachedTableView.reloadData()
     }
     
+    func deleteMusic(_ sender: AnyObject) {
+        let senderCell = TrackCell.getCell(sender, table: cachedTableView)
+        let realm = try! Realm()
+        let objects = realm.objects(CachedMusic.self)
+        for item in objects {
+//            replace with guard
+            if item.artistName! == senderCell.artistLbl.text {
+                realm.delete(item)
+            }
+        }
+    }
     
     
     func checkExistingFiles() {
@@ -80,6 +91,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if !podPlayer.musicData.isEmpty {
             cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
             cell.playButton.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
+            cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
         }
         return cell
     }

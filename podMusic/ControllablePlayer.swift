@@ -8,7 +8,6 @@
 
 import Foundation
 import AVFoundation
-import RealmSwift
 
 /// Player of the application
 class ControllablePlayer {

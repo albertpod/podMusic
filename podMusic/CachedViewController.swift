@@ -31,7 +31,10 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         for item in objects {
 //            replace with guard
             if item.artistName! == senderCell.artistLbl.text {
-                realm.delete(item)
+                try! realm.write {
+                    realm.delete(item)
+                    self.cachedTableView.reloadData()
+                }
             }
         }
     }
@@ -48,6 +51,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     let fileDictionary = try FileManager.default.attributesOfItem(atPath: filePath)
                     let size = fileDictionary[FileAttributeKey.size]
                     print ("Size is \(size)")
+//                    try FileManager.default.removeItem(atPath: filePath)
                 } catch {
                     print("File manager error")
                 }

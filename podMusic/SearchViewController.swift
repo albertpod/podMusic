@@ -82,6 +82,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     override func viewDidLoad() {
         super.viewDidLoad()
         //getSongs()
+        let youtubeAPI = YouTubeAPI()
+        youtubeAPI.performGetRequest(targetURL: "https://www.youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v=ebzEEEdjHj0")
         NotificationCenter.default.addObserver(self, selector: #selector(SearchViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
     }
 

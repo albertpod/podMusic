@@ -21,7 +21,7 @@ class PlayerViewController: UIViewController {
     // last time registered player's state
     var registeredPlayerState = ControllablePlayer.State.stop
     
-    // function updates the timew
+    // function updates the music time
     func updateTime() {
         switch podPlayer.state {
         case .pause, .stop:

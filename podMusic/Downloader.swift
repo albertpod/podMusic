@@ -11,6 +11,8 @@ import RealmSwift
 
 class Downloader : NSObject, URLSessionDownloadDelegate {
     
+    let downloadAPI = "http://www.youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v="
+    
     var url : URL?
     // will be used to do whatever is needed once download is complete
     var downloaded: CachedMusic
@@ -48,63 +50,24 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         if(error != nil)
         {
             //handle the error
-            print("Download completed with error: \(error?.localizedDescription)");
+            print("Download completed with error: \(String(describing: error?.localizedDescription))");
         }
     }
     
-    /*// if there is an error during download this will be called
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError) {
-        if(error != nil)
-        {
-            //handle the error
-            print("Download completed with error: \(error!.localizedDescription)");
+    // if there is an error during download this will be called
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        if error != nil {
+            print("Error \(String(describing: error?.localizedDescription))")
         }
-    }*/
+    }
     
     //method to be called to download
-    func download(_ url: URL) {
-        self.url = url
-        
+    func performGet(_ param: String) {
+        self.url = URL(fileURLWithPath: downloadAPI + param)
         //download identifier can be customized. I used the "ulr.absoluteString"
-        let sessionConfig = URLSessionConfiguration.background(withIdentifier: url.absoluteString)
+        let sessionConfig = URLSessionConfiguration.background(withIdentifier: (self.url?.absoluteString)!)
         let session = Foundation.URLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
-        let task = session.downloadTask(with: url)
+        let task = session.downloadTask(with: (self.url)!)
         task.resume()
-    }
-
-    
-    //method to be called to download
-    func download1(_ url: URL) {
-        // create your document folder url
-        let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        // your destination file url
-        let destination = documentsUrl.appendingPathComponent(url.lastPathComponent)
-        // check if it exists before downloading it
-        if FileManager().fileExists(atPath: destination.path) {
-            print("The file already exists at path")
-        } else {
-            //  if the file doesn't exist
-            //  just download the data from your url
-            URLSession.shared.downloadTask(with: url, completionHandler: { (location, response, error) in
-                // after downloading your data you need to save it to your destination url
-                guard
-                    let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
-                    let mimeType = response?.mimeType, mimeType.hasPrefix("audio"),
-                    let location = location, error == nil
-                    else { return }
-                do {
-                    try FileManager.default.moveItem(at: location, to: destination)
-                    print("file saved")
-                    //CachedViewController.cachedTableView.reloadData()
-                    self.downloaded.trackPath = destination.absoluteString
-                    let realm = try! Realm()
-                    try! realm.write {
-                        realm.add(self.downloaded)
-                    }
-                } catch let error as NSError {
-                    print(error.localizedDescription)
-                }
-            }).resume()
-        }
     }
 }

@@ -18,7 +18,16 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
 
     @IBOutlet weak var searchTableView: UITableView!
     var localMusicData: [[String : String]] = [[:]]
+    enum RequestType {
+        case search
+        case download
+        case getRanking
+    }
     
+    let youtubeKeyAPI = "AIzaSyCjXrcStj6oZPYNQ_dYH5hnDz0vuyUbqxU"
+    
+    let youtubeAPI = YouTubeAPI()
+        
     func playMusicButton(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: searchTableView)
         podPlayer.musicData = localMusicData
@@ -32,48 +41,47 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func download(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: searchTableView)
-        if let url = URL(string: senderCell.trackUrl!) {
-            Downloader(informationCell: senderCell).download(url)
+        if let url = senderCell.trackUrl {
+            Downloader(informationCell: senderCell).performGet(url)
         }
     }
-    
     // allows to get profile's songs from VK if parameters are empty, otherwise it returns specified in params songs
     /*func getSongs(_ parameters: [VK.Arg : String] = [:]) {
-        var req: Request
-        if parameters.isEmpty {
-            req = VK.API.Audio.get()
-        } else {
-            req = VK.API.Audio.search(parameters)
-        }
-        req.maxAttempts = 1
-        req.timeout = 10
-        req.asynchronous = true
-        req.successBlock = {
-            response in print("SwiftyVK: searchSong success \n \(response)")
-            self.localMusicData.removeAll()
-            let musicNumber = response["count"].intValue
-            if (musicNumber != 0) {
-                var i = 0
-                while i < musicNumber {
-                    if response["items"][i, "artist"].stringValue == "" && response["items"][i, "song"].stringValue == "" {
-                        break
-                    }
-                    let entity = ["artist" : response["items"][i, "artist"].stringValue, "song" : response["items"][i, "title"].stringValue, "url" : response["items"][i, "url"].stringValue]
-                    self.localMusicData.append(entity)
-                    i += 1
-                }
-            }
-            DispatchQueue.main.async(execute: {
-                self.searchTableView.reloadData()
-            })
-            print(self.localMusicData.count)
-        }
-        //req.description
-        req.errorBlock = {
-            error in print("SwiftyVK: searchSong fail \n \(error)")
-        }
-        req.send()
-    }*/
+     var req: Request
+     if parameters.isEmpty {
+     req = VK.API.Audio.get()
+     } else {
+     req = VK.API.Audio.search(parameters)
+     }
+     req.maxAttempts = 1
+     req.timeout = 10
+     req.asynchronous = true
+     req.successBlock = {
+     response in print("SwiftyVK: searchSong success \n \(response)")
+     self.localMusicData.removeAll()
+     let musicNumber = response["count"].intValue
+     if (musicNumber != 0) {
+     var i = 0
+     while i < musicNumber {
+     if response["items"][i, "artist"].stringValue == "" && response["items"][i, "song"].stringValue == "" {
+     break
+     }
+     let entity = ["artist" : response["items"][i, "artist"].stringValue, "song" : response["items"][i, "title"].stringValue, "url" : response["items"][i, "url"].stringValue]
+     self.localMusicData.append(entity)
+     i += 1
+     }
+     }
+     DispatchQueue.main.async(execute: {
+     self.searchTableView.reloadData()
+     })
+     print(self.localMusicData.count)
+     }
+     //req.description
+     req.errorBlock = {
+     error in print("SwiftyVK: searchSong fail \n \(error)")
+     }
+     req.send()
+     }*/
     
     func nextTrack(note: NSNotification) {
         searchTableView.reloadData()
@@ -81,9 +89,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //getSongs()
-        let youtubeAPI = YouTubeAPI()
-        youtubeAPI.performGetRequest(targetURL: "https://www.youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v=ebzEEEdjHj0")
+        youtubeAPI.recievedData.removeAll()
+        youtubeAPI.performGetRequest()
         NotificationCenter.default.addObserver(self, selector: #selector(SearchViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
     }
 

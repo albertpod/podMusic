@@ -11,7 +11,7 @@ import RealmSwift
 
 class Downloader : NSObject, URLSessionDownloadDelegate {
     
-    let downloadAPI = "http://www.youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v="
+    let downloadAPI = "https://www.youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v="
     
     var url : URL?
     // will be used to do whatever is needed once download is complete
@@ -31,10 +31,11 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         //copy downloaded data to your documents directory with same names as source file
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        let destinationUrl = documentsUrl!.appendingPathComponent(url!.lastPathComponent)
+        let songIdenfifier = UUID().uuidString + ".mp3"
+        let destinationUrl = documentsUrl!.appendingPathComponent(songIdenfifier)
         let dataFromURL = try? Data(contentsOf: location)
         try? dataFromURL?.write(to: destinationUrl, options: [.atomic])
-        downloaded.trackPath = url!.lastPathComponent
+        downloaded.trackPath = songIdenfifier
         let realm = try! Realm()
         try! realm.write {
             realm.add(downloaded)
@@ -63,7 +64,8 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     
     //method to be called to download
     func performGet(_ param: String) {
-        self.url = URL(fileURLWithPath: downloadAPI + param)
+        self.url = URL(string: downloadAPI + param)
+        print((self.url?.absoluteString)!)
         //download identifier can be customized. I used the "ulr.absoluteString"
         let sessionConfig = URLSessionConfiguration.background(withIdentifier: (self.url?.absoluteString)!)
         let session = Foundation.URLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)

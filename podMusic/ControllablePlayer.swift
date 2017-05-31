@@ -97,6 +97,7 @@ class ControllablePlayer {
     func pauseMusic() {
         player.pause()
         player.rate = 0.0
+        currentTrack = nil
         state = .pause
     }
     

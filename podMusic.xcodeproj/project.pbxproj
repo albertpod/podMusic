@@ -19,7 +19,6 @@
 		505F9D011D8C38BB00949CC9 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505F9D001D8C38BB00949CC9 /* Downloader.swift */; };
 		50951D971D8C2D6700D2D653 /* CachedMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50951D961D8C2D6700D2D653 /* CachedMusic.swift */; };
 		68D052FCD10CF40A5831DBA2 /* Pods_podMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1492D6A2FC9E0C9920573208 /* Pods_podMusic.framework */; };
-		E0423B241E8D815A00B84D00 /* YouTubeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0423B231E8D815A00B84D00 /* YouTubeAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,7 +38,6 @@
 		505F9D001D8C38BB00949CC9 /* Downloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		50951D961D8C2D6700D2D653 /* CachedMusic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedMusic.swift; sourceTree = "<group>"; };
 		CB0FE4FE376DA6AD491AFB75 /* Pods-podMusic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-podMusic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-podMusic/Pods-podMusic.debug.xcconfig"; sourceTree = "<group>"; };
-		E0423B231E8D815A00B84D00 /* YouTubeAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YouTubeAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +97,6 @@
 				503199081D8BDD1E0051E9CA /* TrackCell.swift */,
 				50951D961D8C2D6700D2D653 /* CachedMusic.swift */,
 				5006585D1D8CE61700389EA8 /* ControllablePlayer.swift */,
-				E0423B231E8D815A00B84D00 /* YouTubeAPI.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -163,7 +160,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Albert Podusenko";
 				TargetAttributes = {
 					503198EF1D8B85510051E9CA = {
@@ -270,7 +267,6 @@
 				50951D971D8C2D6700D2D653 /* CachedMusic.swift in Sources */,
 				500658611D8D264600389EA8 /* CachedViewController.swift in Sources */,
 				5006585E1D8CE61700389EA8 /* ControllablePlayer.swift in Sources */,
-				E0423B241E8D815A00B84D00 /* YouTubeAPI.swift in Sources */,
 				500658631D8D87B100389EA8 /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

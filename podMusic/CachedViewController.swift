@@ -33,6 +33,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             if item.artistName! == senderCell.artistLbl.text {
                 try! realm.write {
                     realm.delete(item)
+                    // modify music data
                     self.cachedTableView.reloadData()
                 }
             }
@@ -71,6 +72,13 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func nextTrack(note: NSNotification) {
         cachedTableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("appeared")
+        DispatchQueue.main.async {
+            self.cachedTableView.reloadData()
+        }
     }
     
     override func viewDidLoad() {

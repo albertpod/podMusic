@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 
+/// Representation of entity in Realm db
 class CachedMusic: Object {
     // Agreement: track is a pair of artist and song on the off-chance
     dynamic var artistName: String?

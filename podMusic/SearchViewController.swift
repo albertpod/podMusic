@@ -13,9 +13,10 @@ import AVFoundation
 // number of music to return
 let bound = 100
 
-/// Controller for searching music in VK
-class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, URLSessionDownloadDelegate {
+/// Controller for searching music in YouTube
+class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, URLSessionDownloadDelegate, UISearchBarDelegate {
 
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTableView: UITableView!
     var localMusicData: [[String : String]] = [[:]]
     enum RequestType {
@@ -27,7 +28,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     let youtubeKeyAPI = "AIzaSyCjXrcStj6oZPYNQ_dYH5hnDz0vuyUbqxU"
     
-    // this is to track progress
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
         print(totalBytesWritten)
     }
@@ -35,16 +35,12 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Swift.Error?) {
         if(error != nil)
         {
-            // handle the error
             print("Download completed with error: \(String(describing: error?.localizedDescription))");
         }
     }
     
-    // is called once the download is complete
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        //copy downloaded data to your documents directory with same names as source file
-        //        let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
-        //        let destinationUrl = documentsUrl!.appendingPathComponent(url!.lastPathComponent)
+        localMusicData.removeAll()
         let dataFromURL = try? Data(contentsOf: location)
         do {
             let parsedData = try JSONSerialization.jsonObject(with: dataFromURL!, options: []) as! [String : Any]
@@ -64,18 +60,20 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 let entity = ["artist" : contents[1], "song" : contents[0], "url" : videoId]
                 localMusicData.append(entity)
             }
-            //            let snippetDict = firstItemDict["snippet"] as! Dictionary<String, AnyObject>
         } catch let error as NSError {
             print(error)
         }
-        self.searchTableView.reloadData()
-        
-        //        try? dataFromURL?.write(to: destinationUrl, options: [.atomic])
-        /*downloaded.trackPath = url!.lastPathComponent
-         let realm = try! Realm()
-         try! realm.write {
-         realm.add(downloaded)
-         }*/
+        DispatchQueue.main.async {
+            self.searchTableView.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let searchParams = searchBar.text?.replacingOccurrences(of: " ", with: "%20")
+        performGetRequest(params: searchParams)
+        searchTableView.reloadData()
+        searchBar.endEditing(true)
+        searchBar.text = ""
     }
     
     func playMusicButton(_ sender: AnyObject) {
@@ -105,6 +103,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
             getAPI = "https://www.googleapis.com/youtube/v3/search/?part=snippet&maxResults=30&q=Paul%20Kalkbrenner&type=video&key=\(youtubeKeyAPI)"
         }
         
+        getAPI = getAPI.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!
+        
         let url = URL(string: getAPI)
         
         print((url?.absoluteString)!)
@@ -125,15 +125,15 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        searchBar.delegate = self
+        searchBar.showsScopeBar = true
         localMusicData.removeAll()
-//        let searchParams = "Paul%20Kalkbrenner".replacingOccurrences(of: " ", with: "%20")
         performGetRequest()
         NotificationCenter.default.addObserver(self, selector: #selector(SearchViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

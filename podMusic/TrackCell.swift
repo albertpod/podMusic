@@ -30,6 +30,9 @@ class TrackCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    /**
+     Get the tapped cell
+     */
     static func getCell(_ sender: AnyObject, table: UITableView) -> TrackCell {
         let position: CGPoint = sender.convert(CGPoint.zero, to: table)
         let indexPath = table.indexPathForRow(at: position)
@@ -38,7 +41,9 @@ class TrackCell: UITableViewCell {
         return senderCell
     }
     
-    /* Fill string fields */
+    /**
+     Fill string fields 
+     */
     func completeTrackCell(indexPath: IndexPath, data: [[String : String]]) {
         self.artistLbl.text = data[(indexPath as NSIndexPath).row]["artist"]
         self.songLbl.text = data[(indexPath as NSIndexPath).row]["song"]

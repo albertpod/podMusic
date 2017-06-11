@@ -12,7 +12,6 @@ import RealmSwift
 class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var cachedTableView: UITableView!
-    var previousCell: TrackCell?
     
     func playMusicButton(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: cachedTableView)
@@ -30,43 +29,52 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let objects = realm.objects(CachedMusic.self)
         for item in objects {
 //            replace with guard
-            if item.artistName! == senderCell.artistLbl.text {
+            if item.trackPath! == senderCell.trackUrl {
                 try! realm.write {
+                    // delete file from path
+                    deleteFile(fileUrl: senderCell.trackUrl!)
                     realm.delete(item)
+                    updateTableView()
                     // modify music data
-                    self.cachedTableView.reloadData()
                 }
             }
         }
     }
     
-    
-    func checkExistingFiles() {
+    /**
+     Delete file from iPhone storage
+     */
+    func deleteFile(fileUrl: String) {
         let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] as String
         do {
             let files = try FileManager.default.contentsOfDirectory(atPath: documentsDirectory) as [String]
             for filename in files {
-                let filePath = documentsDirectory + "/" + filename
-                print(filePath)
-                do {
-                    let fileDictionary = try FileManager.default.attributesOfItem(atPath: filePath)
-                    let size = fileDictionary[FileAttributeKey.size]
-                    print ("Size is \(size)")
-//                    try FileManager.default.removeItem(atPath: filePath)
-                } catch {
-                    print("File manager error")
+                if filename == fileUrl {
+                    let filePath = documentsDirectory + "/" + filename
+                    print(filePath)
+                    do {
+                        try FileManager.default.removeItem(atPath: filePath)
+                    } catch {
+                        print("File manager error")
+                    }
                 }
             }
             
         } catch {
             print(error)
         }
-        
+    }
+    
+    func updateTableView() {
+        podPlayer.musicData.removeAll()
         let realm = try! Realm()
         let data = realm.objects(CachedMusic.self)
         for item in data {
             let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!]
             podPlayer.musicData.append(entity)
+        }
+        DispatchQueue.main.async {
+            self.cachedTableView.reloadData()
         }
     }
     
@@ -74,17 +82,9 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cachedTableView.reloadData()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print("appeared")
-        DispatchQueue.main.async {
-            self.cachedTableView.reloadData()
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        podPlayer.musicData.removeAll()
-        checkExistingFiles()
+        updateTableView()
         NotificationCenter.default.addObserver(self, selector: #selector(CachedViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
         // Do any additional setup after loading the view.
     }
@@ -107,14 +107,5 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         return cell
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

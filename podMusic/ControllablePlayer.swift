@@ -33,7 +33,7 @@ class ControllablePlayer {
         case play, stop, pause
     }
     
-    /* Structure which contains the name of the song and artist, it's identifier(url)
+    /** Structure which contains the name of the song and artist, it's identifier(url)
      and it's position in the playable track list */
     struct MusicNode {
         var (trackName, trackArtist, trackUrl, trackPostionInList): (String?, String?, String?, Int?)
@@ -97,7 +97,7 @@ class ControllablePlayer {
     func pauseMusic() {
         player.pause()
         player.rate = 0.0
-        currentTrack = nil
+        //currentTrack = nil
         state = .pause
     }
     
@@ -111,7 +111,7 @@ class ControllablePlayer {
         var margin: Int
         switch commandType {
         case .next:
-            if (currentTrack?.trackPostionInList)! > (musicData.count - 1) {
+            if (currentTrack?.trackPostionInList)! >= (musicData.count - 1) {
                 return
             }
             margin = 1
@@ -133,6 +133,7 @@ class ControllablePlayer {
             tempUrl = documentsUrl! + tempUrl
         }
         pauseMusic()
+        currentTrack = temp
         player = AVPlayer(playerItem: AVPlayerItem(url: URL(string: tempUrl)!))
         player.rate = 1.0
         player.play()

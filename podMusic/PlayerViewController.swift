@@ -11,17 +11,21 @@ import AVFoundation
 
 class PlayerViewController: UIViewController {
 
+    @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var prevTrackButton: UIButton!
     @IBOutlet weak var nextTrackButton: UIButton!
     @IBOutlet weak var songNameLbl: UILabel!
     @IBOutlet weak var artistNameLbl: UILabel!
     @IBOutlet weak var timeLbl: UILabel!
     @IBOutlet weak var playMusicButton: UIButton!
+    @IBOutlet weak var progressView: UIProgressView!
     var timer: Timer!
     // last time registered player's state
     var registeredPlayerState = ControllablePlayer.State.stop
-    
-    // function updates the music time
+    var delta: Float = 0
+    /**
+     Updates the playing music time
+     */
     func updateTime() {
         switch podPlayer.state {
         case .pause, .stop:
@@ -37,6 +41,7 @@ class PlayerViewController: UIViewController {
             let currentTime = Int(CMTimeGetSeconds((currentItem?.currentTime())!))
             let minutes = currentTime / 60
             let seconds = currentTime - minutes * 60
+            progressView.progress += delta
             timeLbl.text = NSString(format: "%02d:%02d", minutes, seconds) as String
             if registeredPlayerState != .play {
                 DispatchQueue.main.async {
@@ -48,7 +53,12 @@ class PlayerViewController: UIViewController {
         }
     }
     
+    /**
+     Switch current track. Depending on the sender this function switches track to the next or previous one.
+     */
     func switchTrack(_ sender: AnyObject) {
+        progressView.progress = 0
+        delta = Float(1.0 / (podPlayer.player.currentItem?.duration.seconds)!)
         let button = sender as! UIButton
         if button.currentTitle == "Next" {
             podPlayer.switchTrack(commandType: .next)
@@ -56,7 +66,6 @@ class PlayerViewController: UIViewController {
             podPlayer.switchTrack(commandType: .prev)
         }
         self.updateName()
-        //podPlayer.switchTrack(commandType: command)
     }
     
     func playPauseTrack(_ sender: AnyObject) {
@@ -76,9 +85,23 @@ class PlayerViewController: UIViewController {
         }
     }
     
+    func handleTap(sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            print("got it")
+        }
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
+        let tap = UIGestureRecognizer(target: self, action: Selector(("handleTap")))
+        progressView.addGestureRecognizer(tap)
+        progressView.progress = 0.0
+        slider.maximumValue = Float((podPlayer.player.currentItem?.duration.seconds)!)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
+        if podPlayer.state == .play {
+            delta = Float(1.0 / (podPlayer.player.currentItem?.duration.seconds)!)
+        }
         nextTrackButton.addTarget(self, action: #selector(PlayerViewController.switchTrack(_:)), for: .touchUpInside)
         prevTrackButton.addTarget(self, action: #selector(PlayerViewController.switchTrack(_:)), for: .touchUpInside)
         playMusicButton.addTarget(self, action: #selector(PlayerViewController.playPauseTrack(_:)), for: .touchUpInside)

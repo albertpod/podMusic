@@ -14,10 +14,7 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     let downloadAPI = "https://www.youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v="
     
     var url : URL?
-    // will be used to do whatever is needed once download is complete
     var downloaded: CachedMusic
-
-    //public func download(method: Method, URLString: URLStringConvertible, destination: Request.DownloadFileDestination) -> Request
     
     init(informationCell: TrackCell) {
         let temp = CachedMusic()
@@ -27,7 +24,10 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         downloaded = temp
     }
     
-    //is called once the download is complete
+    /**
+     It is called once the download is complete
+     The downloaded data is being saved to the iPhone storage and an object is being recorded to Realm database.
+     */
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         //copy downloaded data to your documents directory with same names as source file
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
@@ -42,15 +42,19 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         }
     }
     
-    //this is to track progress
+    /** 
+     This is to track progress
+     */
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
         print(totalBytesWritten)
     }
-
+    
+    /**
+     Error handling during download
+     */
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Swift.Error?) {
         if(error != nil)
         {
-            //handle the error
             print("Download completed with error: \(String(describing: error?.localizedDescription))");
         }
     }
@@ -62,11 +66,12 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         }
     }
     
-    //method to be called to download
+    /**
+     Method for file downloading
+     */
     func performGet(_ param: String) {
         self.url = URL(string: downloadAPI + param)
         print((self.url?.absoluteString)!)
-        //download identifier can be customized. I used the "ulr.absoluteString"
         let sessionConfig = URLSessionConfiguration.background(withIdentifier: (self.url?.absoluteString)!)
         let session = Foundation.URLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
         let task = session.downloadTask(with: (self.url)!)

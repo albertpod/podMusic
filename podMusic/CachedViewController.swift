@@ -28,7 +28,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let realm = try! Realm()
         let objects = realm.objects(CachedMusic.self)
         for item in objects {
-//            replace with guard
+        // FIXME: replace with guard
             if item.trackPath! == senderCell.trackUrl {
                 try! realm.write {
                     // delete file from path
@@ -70,7 +70,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let realm = try! Realm()
         let data = realm.objects(CachedMusic.self)
         for item in data {
-            let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!]
+            let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!, "imageURL" : item.trackImageUrl!]
             podPlayer.musicData.append(entity)
         }
         DispatchQueue.main.async {
@@ -84,9 +84,12 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateTableView()
         NotificationCenter.default.addObserver(self, selector: #selector(CachedViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        updateTableView()
     }
 
     override func didReceiveMemoryWarning() {
@@ -102,7 +105,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = cachedTableView.dequeueReusableCell(withIdentifier: "CachedCell")! as! TrackCell
         if !podPlayer.musicData.isEmpty {
             cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
-            cell.playButton.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
+            cell.playButton?.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
             cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
         }
         return cell

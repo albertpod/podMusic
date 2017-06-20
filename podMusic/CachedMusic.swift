@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import UIKit
 
 /// Representation of entity in Realm db
 class CachedMusic: Object {
@@ -16,4 +17,5 @@ class CachedMusic: Object {
     dynamic var songName: String?
     // The following string points on the physical location of the track
     dynamic var trackPath: String?
+    dynamic var trackImageUrl: String?
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 import AVFoundation
+import UIKit
 
 /// Player of the application
 class ControllablePlayer {
@@ -36,7 +37,7 @@ class ControllablePlayer {
     /** Structure which contains the name of the song and artist, it's identifier(url)
      and it's position in the playable track list */
     struct MusicNode {
-        var (trackName, trackArtist, trackUrl, trackPostionInList): (String?, String?, String?, Int?)
+        var (trackName, trackArtist, trackUrl, trackImageURL, trackPostionInList): (String?, String?, String?, String?, Int?)
     }
     
     var currentTrack: MusicNode?
@@ -61,6 +62,7 @@ class ControllablePlayer {
                 temp.trackArtist = item["artist"]!
                 temp.trackName = item["song"]!
                 temp.trackUrl = url
+                temp.trackImageURL = item["imageURL"]
                 return temp
             }
         }
@@ -126,6 +128,7 @@ class ControllablePlayer {
         temp.trackArtist = musicData[(currentTrack?.trackPostionInList)! + margin]["artist"]!
         temp.trackName = musicData[(currentTrack?.trackPostionInList)! + margin]["song"]!
         temp.trackUrl = musicData[(currentTrack?.trackPostionInList)! + margin]["url"]!
+        temp.trackImageURL = musicData[(currentTrack?.trackPostionInList)! + margin]["imageURL"]!
         tempUrl = temp.trackUrl!
         temp.trackPostionInList = (currentTrack?.trackPostionInList)! + margin
         if (temp.trackUrl?.range(of: "https") == nil) {

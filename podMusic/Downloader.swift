@@ -11,7 +11,7 @@ import RealmSwift
 
 class Downloader : NSObject, URLSessionDownloadDelegate {
     
-    let downloadAPI = "https://www.youtubeinmp3.com/fetch/?video=https://www.youtube.com/watch?v="
+    let downloadAPI = "https://www.youtubeinmp3.com/fetch/?video="
     
     var url : URL?
     var downloaded: CachedMusic
@@ -21,6 +21,8 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         temp.artistName = informationCell.artistLbl.text
         temp.songName = informationCell.songLbl.text
         temp.trackPath = ""
+        temp.trackImageUrl = informationCell.trackImageUrl!
+        
         downloaded = temp
     }
     
@@ -35,8 +37,8 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         let destinationUrl = documentsUrl!.appendingPathComponent(songIdenfifier)
         let dataFromURL = try? Data(contentsOf: location)
         try? dataFromURL?.write(to: destinationUrl, options: [.atomic])
-        downloaded.trackPath = songIdenfifier
         let realm = try! Realm()
+        downloaded.trackPath = songIdenfifier
         try! realm.write {
             realm.add(downloaded)
         }

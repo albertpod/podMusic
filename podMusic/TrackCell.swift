@@ -7,17 +7,19 @@
 //
 
 import UIKit
-
+import YouTubePlayer
 class TrackCell: UITableViewCell {
     
     // The following string points on WEB location of the track
     var trackUrl: String?
+    var trackImageUrl: String?
     // Agreement: track is a pair of artist and song on the off-chance
     @IBOutlet weak var songLbl: UILabel!
     @IBOutlet weak var artistLbl: UILabel!
-    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var playButton: UIButton?
     @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var deleteTrack: UIButton!
+    @IBOutlet weak var youtubeView: YouTubePlayerView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -41,6 +43,7 @@ class TrackCell: UITableViewCell {
         return senderCell
     }
     
+    
     /**
      Fill string fields 
      */
@@ -48,14 +51,21 @@ class TrackCell: UITableViewCell {
         self.artistLbl.text = data[(indexPath as NSIndexPath).row]["artist"]
         self.songLbl.text = data[(indexPath as NSIndexPath).row]["song"]
         self.trackUrl = data[(indexPath as NSIndexPath).row]["url"]
-        switch podPlayer.state {
-        case .pause, .stop:
-            self.playButton.setTitle("Play", for: .normal)
-        default:
-            if podPlayer.currentTrack?.trackUrl == self.trackUrl {
-                self.playButton.setTitle("Playing", for: .normal)
-            } else {
-                self.playButton.setTitle("Play", for: .normal)
+        self.trackImageUrl = data[(indexPath as NSIndexPath).row]["imageURL"]
+        if self.trackUrl?.range(of: "http") != nil {
+            let myVideoURL = URL(string: self.trackUrl!)!
+            youtubeView.loadVideoURL(myVideoURL)
+        }
+        if let playButton = self.playButton {
+            switch podPlayer.state {
+            case .pause, .stop:
+                playButton.setTitle("Play", for: .normal)
+            default:
+                if podPlayer.currentTrack?.trackUrl == self.trackUrl {
+                    playButton.setTitle("Playing", for: .normal)
+                } else {
+                    playButton.setTitle("Play", for: .normal)
+                }
             }
         }
     }

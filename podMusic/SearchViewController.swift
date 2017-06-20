@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import YouTubePlayer
 import AVFoundation
 
 // number of music to return
@@ -51,13 +51,17 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                     continue
                 }
                 let videoId = idField["videoId"] as! String
+                let videoUrl = "https://www.youtube.com/watch?v=\(videoId)"
                 let snippetDict = item["snippet"] as! Dictionary<String, AnyObject>
                 let title = snippetDict["title"] as! String
+                let thumbnails = snippetDict["thumbnails"] as! Dictionary<String, AnyObject>
+                let photos = [thumbnails["medium"] as! Dictionary<String, AnyObject>, thumbnails["high"] as! Dictionary<String, AnyObject>]
+                let highPhoto = photos[1]["url"] as! String
                 var contents = title.components(separatedBy: "-")
                 if contents.count < 2 {
                     contents.append("")
                 }
-                let entity = ["artist" : contents[1], "song" : contents[0], "url" : videoId]
+                let entity = ["artist" : contents[1], "song" : contents[0], "id" : videoId, "url" : videoUrl, "imageURL": highPhoto]
                 localMusicData.append(entity)
             }
         } catch let error as NSError {
@@ -146,7 +150,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchTableView.dequeueReusableCell(withIdentifier: "TrackCell")! as! TrackCell
         cell.completeTrackCell(indexPath: indexPath, data: localMusicData)
-        cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusicButton(_:)), for: .touchUpInside)
+        
+        //cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusicButton(_:)), for: .touchUpInside)
         cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
         return cell
     }

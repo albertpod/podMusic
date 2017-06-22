@@ -83,6 +83,7 @@
 		503198F21D8B85510051E9CA /* podMusic */ = {
 			isa = PBXGroup;
 			children = (
+				503198F31D8B85510051E9CA /* AppDelegate.swift */,
 				E00187CF1EF81DA6009F5AB2 /* Extenstions.swift */,
 				503199051D8B857A0051E9CA /* Models */,
 				503199061D8B85880051E9CA /* Views */,
@@ -116,7 +117,6 @@
 		503199071D8B85940051E9CA /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				503198F31D8B85510051E9CA /* AppDelegate.swift */,
 				500658601D8D264600389EA8 /* CachedViewController.swift */,
 				500658621D8D87B100389EA8 /* PlayerViewController.swift */,
 				5031990A1D8BE0380051E9CA /* SearchViewController.swift */,

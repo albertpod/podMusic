@@ -8,6 +8,7 @@
 
 import UIKit
 import YouTubePlayer
+import AVFoundation
 class TrackCell: UITableViewCell {
     
     // The following string points on WEB location of the track
@@ -20,6 +21,7 @@ class TrackCell: UITableViewCell {
     @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var deleteTrack: UIButton!
     @IBOutlet weak var youtubeView: YouTubePlayerView!
+    var timer: Timer?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -43,6 +45,12 @@ class TrackCell: UITableViewCell {
         return senderCell
     }
     
+    func disableAudioPlayer() {
+        if youtubeView.playerState == .Playing {
+            podPlayer.pauseMusic()
+        }
+    }
+    
     
     /**
      Fill string fields 
@@ -55,6 +63,7 @@ class TrackCell: UITableViewCell {
         if self.trackUrl?.range(of: "http") != nil {
             let myVideoURL = URL(string: self.trackUrl!)!
             youtubeView.loadVideoURL(myVideoURL)
+            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(TrackCell.disableAudioPlayer), userInfo: nil, repeats: true)
         }
         if let playButton = self.playButton {
             switch podPlayer.state {

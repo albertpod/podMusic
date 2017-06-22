@@ -111,6 +111,9 @@ class ControllablePlayer {
      */
     func switchTrack(commandType: switchCommand) {
         var margin: Int
+        if currentTrack == nil {
+            return
+        }
         switch commandType {
         case .next:
             if (currentTrack?.trackPostionInList)! >= (musicData.count - 1) {

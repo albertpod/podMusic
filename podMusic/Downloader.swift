@@ -37,10 +37,12 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         let destinationUrl = documentsUrl!.appendingPathComponent(songIdenfifier)
         let dataFromURL = try? Data(contentsOf: location)
         try? dataFromURL?.write(to: destinationUrl, options: [.atomic])
-        let realm = try! Realm()
-        downloaded.trackPath = songIdenfifier
-        try! realm.write {
-            realm.add(downloaded)
+        DispatchQueue(label: "albertpod.podMusic").async {
+            let realm = try! Realm()
+            self.downloaded.trackPath = songIdenfifier
+            try! realm.write {
+                realm.add(self.downloaded)
+            }
         }
     }
     

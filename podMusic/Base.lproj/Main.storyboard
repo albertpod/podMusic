@@ -92,7 +92,7 @@
                             <constraint firstItem="ffa-xK-ssQ" firstAttribute="centerX" secondItem="sl9-QH-NG4" secondAttribute="centerX" constant="1.5" id="wEa-Zd-805"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="player" id="72D-qs-Zzi"/>
+                    <tabBarItem key="tabBarItem" title="player" image="Player" id="72D-qs-Zzi"/>
                     <connections>
                         <outlet property="artistNameLbl" destination="vIJ-Sp-JjQ" id="p2a-1b-DB3"/>
                         <outlet property="nextTrackButton" destination="anV-SQ-7zz" id="7tE-Tu-CCh"/>
@@ -225,7 +225,7 @@
                             <constraint firstItem="wdo-SP-2el" firstAttribute="centerX" secondItem="ChW-3D-CyB" secondAttribute="centerX" id="xMH-ol-Pxn"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="search" id="Pdc-39-nlp"/>
+                    <tabBarItem key="tabBarItem" title="search" image="Search" id="Pdc-39-nlp"/>
                     <connections>
                         <outlet property="searchBar" destination="Aoq-Yh-DIq" id="HOF-sK-MgX"/>
                         <outlet property="searchTableView" destination="wdo-SP-2el" id="QoO-ZI-f9t"/>
@@ -321,7 +321,7 @@
                             <constraint firstItem="77s-uh-8Df" firstAttribute="leading" secondItem="usn-oI-cef" secondAttribute="leadingMargin" constant="-16" id="wVE-gQ-e6F"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="cache" id="GKz-R2-KSX"/>
+                    <tabBarItem key="tabBarItem" title="cache" image="Cache" id="GKz-R2-KSX"/>
                     <connections>
                         <outlet property="cachedTableView" destination="77s-uh-8Df" id="7n1-nk-GEP"/>
                     </connections>
@@ -331,4 +331,9 @@
             <point key="canvasLocation" x="896.79999999999995" y="224.4377811094453"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Cache" width="32" height="32"/>
+        <image name="Player" width="32" height="32"/>
+        <image name="Search" width="32" height="32"/>
+    </resources>
 </document>

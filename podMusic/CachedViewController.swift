@@ -25,17 +25,19 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func deleteMusic(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: cachedTableView)
-        let realm = try! Realm()
-        let objects = realm.objects(CachedMusic.self)
-        for item in objects {
-        // FIXME: replace with guard
-            if item.trackPath! == senderCell.trackUrl {
-                try! realm.write {
-                    // delete file from path
-                    deleteFile(fileUrl: senderCell.trackUrl!)
-                    realm.delete(item)
-                    updateTableView()
-                    // modify music data
+        DispatchQueue(label: "albertpod.podMusic").async {
+            let realm = try! Realm()
+            let objects = realm.objects(CachedMusic.self)
+            for item in objects {
+                // FIXME: replace with guard
+                if item.trackPath! == senderCell.trackUrl {
+                    try! realm.write {
+                        // delete file from path
+                        self.deleteFile(fileUrl: senderCell.trackUrl!)
+                        realm.delete(item)
+                        self.updateTableView()
+                        // modify music data
+                    }
                 }
             }
         }
@@ -67,11 +69,13 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func updateTableView() {
         podPlayer.musicData.removeAll()
-        let realm = try! Realm()
-        let data = realm.objects(CachedMusic.self)
-        for item in data {
-            let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!, "imageURL" : item.trackImageUrl!]
-            podPlayer.musicData.append(entity)
+        DispatchQueue(label: "albertpod.podMusic").async {
+            let realm = try! Realm()
+            let data = realm.objects(CachedMusic.self)
+            for item in data {
+                let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!, "imageURL" : item.trackImageUrl!]
+                podPlayer.musicData.append(entity)
+            }
         }
         DispatchQueue.main.async {
             self.cachedTableView.reloadData()

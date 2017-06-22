@@ -8,7 +8,6 @@
 
 import UIKit
 import AVFoundation
-import RealmSwift
 
 let podPlayer = ControllablePlayer()
 

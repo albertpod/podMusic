@@ -68,6 +68,7 @@ class PlayerViewController: UIViewController {
     func playPauseTrack(_ sender: AnyObject) {
         if podPlayer.state == .play {
             podPlayer.pauseMusic()
+            registeredPlayerState = .pause
         } else if podPlayer.currentTrack != nil {
             podPlayer.player.rate = 1.0
             podPlayer.player.play()
@@ -79,8 +80,11 @@ class PlayerViewController: UIViewController {
         DispatchQueue.main.async {
             self.artistNameLbl.text = podPlayer.currentTrack?.trackArtist
             self.songNameLbl.text = podPlayer.currentTrack?.trackName
-            if let url = URL.init(string: (podPlayer.currentTrack?.trackImageURL)!) {
-                self.songImage?.downloadedFrom(url: url)
+            if let urlString = podPlayer.currentTrack?.trackImageURL! {
+                DispatchQueue.main.async {
+                    let url = URL.init(string: urlString)!
+                    self.songImage?.downloadedFrom(url: url)
+                }
             } else {
                 self.songImage = nil
             }
@@ -90,23 +94,33 @@ class PlayerViewController: UIViewController {
         }
     }
     
-    func handleTap(_ sender: AnyObject) {
-        print("touched", slider.value)
+    func handleTap(_ sender: UISlider) {
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
+        if podPlayer.currentTrack == nil {
+            sender.value = 0
+            return
+        }
         let time = CMTimeMakeWithSeconds(Float64(slider.value), (podPlayer.player.currentItem?.asset.duration.timescale)!)
         podPlayer.player.seek(to: time)
+    }
+    
+    func touched(_ sender: UISlider) {
+        print("touched", sender.value)
+        timer.invalidate()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateName()
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
         slider.addTarget(self, action: #selector(PlayerViewController.handleTap(_:)), for: .touchUpInside)
+        slider.addTarget(self, action: #selector(PlayerViewController.touched(_:)), for: .touchDown)
         nextTrackButton.addTarget(self, action: #selector(PlayerViewController.switchTrack(_:)), for: .touchUpInside)
         prevTrackButton.addTarget(self, action: #selector(PlayerViewController.switchTrack(_:)), for: .touchUpInside)
         playMusicButton.addTarget(self, action: #selector(PlayerViewController.playPauseTrack(_:)), for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
         print("appear")
     }
 

@@ -77,13 +77,11 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 podPlayer.musicData.append(entity)
             }
         }
-        DispatchQueue.main.async {
-            self.cachedTableView.reloadData()
-        }
+        self.cachedTableView.reloadData()
     }
     
     func nextTrack(note: NSNotification) {
-        cachedTableView.reloadData()
+        self.cachedTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -108,9 +106,11 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = cachedTableView.dequeueReusableCell(withIdentifier: "CachedCell")! as! TrackCell
         if !podPlayer.musicData.isEmpty {
-            cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
-            cell.playButton?.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
-            cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
+            DispatchQueue.main.async {
+                cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
+                cell.playButton?.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
+                cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
+            }
         }
         return cell
     }

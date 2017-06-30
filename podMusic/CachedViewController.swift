@@ -25,7 +25,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func deleteMusic(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: cachedTableView)
-        DispatchQueue(label: "albertpod.podMusic").async {
+        DispatchQueue(label: "albertpod.podMusic").sync {
             let realm = try! Realm()
             let objects = realm.objects(CachedMusic.self)
             for item in objects {
@@ -35,12 +35,12 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
                         // delete file from path
                         self.deleteFile(fileUrl: senderCell.trackUrl!)
                         realm.delete(item)
-                        self.updateTableView()
                         // modify music data
                     }
                 }
             }
         }
+        self.updateTableView()
     }
     
     /**
@@ -69,15 +69,15 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func updateTableView() {
         podPlayer.musicData.removeAll()
-        DispatchQueue(label: "albertpod.podMusic").async {
+        DispatchQueue(label: "albertpod.podMusic").sync {
             let realm = try! Realm()
             let data = realm.objects(CachedMusic.self)
             for item in data {
                 let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!, "imageURL" : item.trackImageUrl!]
                 podPlayer.musicData.append(entity)
             }
+            self.cachedTableView.reloadData()
         }
-        self.cachedTableView.reloadData()
     }
     
     func nextTrack(note: NSNotification) {
@@ -106,11 +106,9 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = cachedTableView.dequeueReusableCell(withIdentifier: "CachedCell")! as! TrackCell
         if !podPlayer.musicData.isEmpty {
-            DispatchQueue.main.async {
-                cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
-                cell.playButton?.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
-                cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
-            }
+            cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
+            cell.playButton?.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
+            cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
         }
         return cell
     }

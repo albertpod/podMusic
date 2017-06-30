@@ -42,6 +42,11 @@ class PlayerViewController: UIViewController {
             let seconds = currentTime - minutes * 60
             timeLbl.text = NSString(format: "%02d:%02d", minutes, seconds) as String
             slider.value = Float(currentTime)
+            print(slider.value, round(slider.maximumValue))
+            if slider.value >= round(slider.maximumValue) {
+                podPlayer.switchTrack(commandType: .next)
+                registeredPlayerState = .pause
+            }
             if registeredPlayerState != .play {
                 DispatchQueue.main.async {
                     self.registeredPlayerState = .play
@@ -68,7 +73,6 @@ class PlayerViewController: UIViewController {
     func playPauseTrack(_ sender: AnyObject) {
         if podPlayer.state == .play {
             podPlayer.pauseMusic()
-            registeredPlayerState = .pause
         } else if podPlayer.currentTrack != nil {
             podPlayer.player.rate = 1.0
             podPlayer.player.play()
@@ -81,20 +85,21 @@ class PlayerViewController: UIViewController {
             self.artistNameLbl.text = podPlayer.currentTrack?.trackArtist
             self.songNameLbl.text = podPlayer.currentTrack?.trackName
             if let urlString = podPlayer.currentTrack?.trackImageURL! {
-                DispatchQueue.main.async {
-                    let url = URL.init(string: urlString)!
-                    self.songImage?.downloadedFrom(url: url)
-                }
+                let url = URL.init(string: urlString)!
+                self.songImage?.downloadedFrom(url: url)
             } else {
                 self.songImage = nil
             }
-        }
-        if let song = podPlayer.player.currentItem {
-            slider.maximumValue = Float((song.duration.seconds))
+            if let song = podPlayer.player.currentItem {
+                if !song.duration.seconds.isNaN {
+                    self.slider.maximumValue = Float((song.duration.seconds))
+                }
+            }
         }
     }
     
     func handleTap(_ sender: UISlider) {
+        print("touched2")
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
         if podPlayer.currentTrack == nil {
             sender.value = 0
@@ -105,18 +110,21 @@ class PlayerViewController: UIViewController {
     }
     
     func touched(_ sender: UISlider) {
-        print("touched", sender.value)
+        print("touched1", sender.value)
         timer.invalidate()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.updateName()
         slider.addTarget(self, action: #selector(PlayerViewController.handleTap(_:)), for: .touchUpInside)
         slider.addTarget(self, action: #selector(PlayerViewController.touched(_:)), for: .touchDown)
         nextTrackButton.addTarget(self, action: #selector(PlayerViewController.switchTrack(_:)), for: .touchUpInside)
         prevTrackButton.addTarget(self, action: #selector(PlayerViewController.switchTrack(_:)), for: .touchUpInside)
         playMusicButton.addTarget(self, action: #selector(PlayerViewController.playPauseTrack(_:)), for: .touchUpInside)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        updateName()
     }
     
     override func viewWillAppear(_ animated: Bool) {

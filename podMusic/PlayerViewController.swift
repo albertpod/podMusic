@@ -42,9 +42,7 @@ class PlayerViewController: UIViewController {
             let seconds = currentTime - minutes * 60
             timeLbl.text = NSString(format: "%02d:%02d", minutes, seconds) as String
             slider.value = Float(currentTime)
-            print(slider.value, round(slider.maximumValue))
             if slider.value >= round(slider.maximumValue) {
-                podPlayer.switchTrack(commandType: .next)
                 registeredPlayerState = .pause
             }
             if registeredPlayerState != .play {
@@ -116,6 +114,7 @@ class PlayerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
         slider.addTarget(self, action: #selector(PlayerViewController.handleTap(_:)), for: .touchUpInside)
         slider.addTarget(self, action: #selector(PlayerViewController.touched(_:)), for: .touchDown)
         nextTrackButton.addTarget(self, action: #selector(PlayerViewController.switchTrack(_:)), for: .touchUpInside)
@@ -128,7 +127,6 @@ class PlayerViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(PlayerViewController.updateTime), userInfo: nil, repeats: true)
         print("appear")
     }
 

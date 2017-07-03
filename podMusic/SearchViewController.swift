@@ -152,7 +152,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         cell.completeTrackCell(indexPath: indexPath, data: localMusicData)
         
         //cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusicButton(_:)), for: .touchUpInside)
-        cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
+        //cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
         return cell
     }
 

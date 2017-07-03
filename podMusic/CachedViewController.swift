@@ -8,10 +8,40 @@
 
 import UIKit
 import RealmSwift
+import CoreMedia
+import SwipeCellKit
 
-class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, SwipeTableViewCellDelegate {
+
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
+    var defaultOptions = SwipeTableOptions()
 
     @IBOutlet weak var cachedTableView: UITableView!
+    
+    var timer: Timer!
+    
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(CachedViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
+    
+    func handleRefresh(refreshControl: UIRefreshControl) {
+        
+        self.cachedTableView.reloadData()
+        updateTableView()
+        refreshControl.endRefreshing()
+    }
+    
+    func updater() {
+        if let song = podPlayer.player.currentItem {
+            if song.duration.seconds <= CMTimeGetSeconds(song.currentTime()) {
+                podPlayer.switchTrack(commandType: .next)
+                updateTableView()
+            }
+        }
+    }
     
     func playMusicButton(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: cachedTableView)
@@ -23,8 +53,8 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.cachedTableView.reloadData()
     }
     
-    func deleteMusic(_ sender: AnyObject) {
-        let senderCell = TrackCell.getCell(sender, table: cachedTableView)
+    func deleteMusic(index: IndexPath) {
+        let senderCell = cachedTableView.cellForRow(at: index) as! TrackCell //TrackCell.getCell(sender, table: cachedTableView)
         DispatchQueue(label: "albertpod.podMusic").sync {
             let realm = try! Realm()
             let objects = realm.objects(CachedMusic.self)
@@ -86,7 +116,10 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        podPlayer.musicData.removeAll()
         NotificationCenter.default.addObserver(self, selector: #selector(CachedViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(CachedViewController.updater), userInfo: nil, repeats: true)
+        cachedTableView.addSubview(refreshControl)
         // Do any additional setup after loading the view.
     }
     
@@ -105,12 +138,50 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = cachedTableView.dequeueReusableCell(withIdentifier: "CachedCell")! as! TrackCell
+        cell.delegate = self
         if !podPlayer.musicData.isEmpty {
             cell.completeTrackCell(indexPath: indexPath, data: podPlayer.musicData)
             cell.playButton?.addTarget(self, action: #selector(CachedViewController.playMusicButton(_:)), for: .touchUpInside)
-            cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
+            //cell.deleteTrack.addTarget(self, action: #selector(CachedViewController.deleteMusic(_:)), for: .touchUpInside)
         }
         return cell
+    }
+    
+
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction] {
+        if orientation == .right {
+            let delete = SwipeAction(style: .destructive, title: nil) { action, indexPath in
+                self.deleteMusic(index: indexPath)
+            }
+            configure(action: delete, with: .trash)
+            return [delete]
+            // flag.hidesWhenSelected = false
+            
+        }
+        return []
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.expansionStyle = orientation == .left ? .none : .destructive
+        options.transitionStyle = defaultOptions.transitionStyle
+        print("swiped")
+        return options
+    }
+    
+    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 10)
+        }
     }
 
 }

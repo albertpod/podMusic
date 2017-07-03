@@ -205,7 +205,7 @@
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="artistLbl" destination="VTM-1P-hPz" id="m3P-Eh-AAe"/>
-                                            <outlet property="downloadButton" destination="HUE-jy-19B" id="e5D-GX-S7o"/>
+                                            <outlet property="downloadButton" destination="HUE-jy-19B" id="FR5-gc-hTr"/>
                                             <outlet property="songLbl" destination="9xB-zO-LGg" id="wYL-CM-VrJ"/>
                                             <outlet property="youtubeView" destination="5Wh-oi-Kt7" id="iTb-Ag-4Yz"/>
                                         </connections>
@@ -268,12 +268,6 @@
                                                         <color key="titleColor" red="0.99803817102233661" green="0.99527072264275873" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     </state>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ole-8Z-Du5">
-                                                    <rect key="frame" x="313" y="25" width="45" height="30"/>
-                                                    <state key="normal" title="Delete">
-                                                        <color key="titleColor" red="0.99803817102233661" green="0.99527072264275873" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    </state>
-                                                </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gre-1F-Ouy">
                                                     <rect key="frame" x="74" y="17" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -281,27 +275,33 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="odK-6E-SU1">
-                                                    <rect key="frame" x="74" y="46" width="42" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <rect key="frame" x="74" y="46" width="33" height="16"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                     <color key="textColor" red="0.99803817102233661" green="0.99527072264275873" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Delete" translatesAutoresizingMaskIntoConstraints="NO" id="koY-x0-Y3j">
+                                                    <rect key="frame" x="341" y="35" width="15" height="15"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="0ew-z0-EF8"/>
+                                                        <constraint firstAttribute="width" constant="15" id="fgJ-kC-1ml"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" red="0.21760841784108534" green="0.21700501400261296" blue="0.21803616751269039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="gre-1F-Ouy" firstAttribute="leading" secondItem="y83-Qp-vmg" secondAttribute="trailing" constant="8" id="0sV-fd-Wv4"/>
                                                 <constraint firstItem="y83-Qp-vmg" firstAttribute="leading" secondItem="KFG-g7-1bt" secondAttribute="leadingMargin" constant="12" id="69J-gU-Rpd"/>
                                                 <constraint firstItem="odK-6E-SU1" firstAttribute="leading" secondItem="y83-Qp-vmg" secondAttribute="trailing" constant="8" symbolic="YES" id="F4M-4G-QKE"/>
+                                                <constraint firstItem="koY-x0-Y3j" firstAttribute="centerY" secondItem="KFG-g7-1bt" secondAttribute="centerY" constant="2.75" id="Gcg-Wv-WT6"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="koY-x0-Y3j" secondAttribute="trailing" constant="11" id="Rvc-Ed-Tqu"/>
                                                 <constraint firstItem="gre-1F-Ouy" firstAttribute="top" secondItem="KFG-g7-1bt" secondAttribute="topMargin" constant="9" id="S73-ZQ-zhD"/>
                                                 <constraint firstItem="y83-Qp-vmg" firstAttribute="centerY" secondItem="KFG-g7-1bt" secondAttribute="centerY" id="UPU-o6-3x5"/>
-                                                <constraint firstItem="y83-Qp-vmg" firstAttribute="baseline" secondItem="Ole-8Z-Du5" secondAttribute="baseline" id="Vva-V9-tzC"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Ole-8Z-Du5" secondAttribute="trailing" constant="9" id="ae4-Z9-QRW"/>
                                                 <constraint firstItem="odK-6E-SU1" firstAttribute="top" secondItem="gre-1F-Ouy" secondAttribute="bottom" constant="8" id="iPj-gq-8TU"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="artistLbl" destination="odK-6E-SU1" id="Gxw-3r-9EY"/>
-                                            <outlet property="deleteTrack" destination="Ole-8Z-Du5" id="gdS-dN-LRe"/>
                                             <outlet property="playButton" destination="y83-Qp-vmg" id="aIF-EA-hFC"/>
                                             <outlet property="songLbl" destination="gre-1F-Ouy" id="Ua4-sb-Zel"/>
                                         </connections>
@@ -333,6 +333,7 @@
     </scenes>
     <resources>
         <image name="Cache" width="32" height="32"/>
+        <image name="Delete" width="64" height="64"/>
         <image name="Player" width="32" height="32"/>
         <image name="Search" width="32" height="32"/>
     </resources>

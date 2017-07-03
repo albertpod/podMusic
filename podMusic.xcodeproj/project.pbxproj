@@ -20,6 +20,8 @@
 		50951D971D8C2D6700D2D653 /* CachedMusic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50951D961D8C2D6700D2D653 /* CachedMusic.swift */; };
 		68D052FCD10CF40A5831DBA2 /* Pods_podMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1492D6A2FC9E0C9920573208 /* Pods_podMusic.framework */; };
 		E00187D01EF81DA6009F5AB2 /* Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E00187CF1EF81DA6009F5AB2 /* Extenstions.swift */; };
+		E0671CF61F0A8D39001CAA9E /* DownloadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0671CF51F0A8D39001CAA9E /* DownloadCell.swift */; };
+		E0C6C0041F08F95200C59DB8 /* ActionDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C6C0031F08F95200C59DB8 /* ActionDescriptor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		50951D961D8C2D6700D2D653 /* CachedMusic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CachedMusic.swift; sourceTree = "<group>"; };
 		CB0FE4FE376DA6AD491AFB75 /* Pods-podMusic.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-podMusic.debug.xcconfig"; path = "Pods/Target Support Files/Pods-podMusic/Pods-podMusic.debug.xcconfig"; sourceTree = "<group>"; };
 		E00187CF1EF81DA6009F5AB2 /* Extenstions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extenstions.swift; sourceTree = "<group>"; };
+		E0671CF51F0A8D39001CAA9E /* DownloadCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadCell.swift; sourceTree = "<group>"; };
+		E0C6C0031F08F95200C59DB8 /* ActionDescriptor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionDescriptor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +89,7 @@
 			children = (
 				503198F31D8B85510051E9CA /* AppDelegate.swift */,
 				E00187CF1EF81DA6009F5AB2 /* Extenstions.swift */,
+				E0C6C0031F08F95200C59DB8 /* ActionDescriptor.swift */,
 				503199051D8B857A0051E9CA /* Models */,
 				503199061D8B85880051E9CA /* Views */,
 				503199071D8B85940051E9CA /* Controllers */,
@@ -101,6 +106,7 @@
 				503199081D8BDD1E0051E9CA /* TrackCell.swift */,
 				50951D961D8C2D6700D2D653 /* CachedMusic.swift */,
 				5006585D1D8CE61700389EA8 /* ControllablePlayer.swift */,
+				E0671CF51F0A8D39001CAA9E /* DownloadCell.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -263,11 +269,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0C6C0041F08F95200C59DB8 /* ActionDescriptor.swift in Sources */,
 				503199091D8BDD1E0051E9CA /* TrackCell.swift in Sources */,
 				505F9D011D8C38BB00949CC9 /* Downloader.swift in Sources */,
 				5031990B1D8BE0380051E9CA /* SearchViewController.swift in Sources */,
 				503198F41D8B85510051E9CA /* AppDelegate.swift in Sources */,
 				50951D971D8C2D6700D2D653 /* CachedMusic.swift in Sources */,
+				E0671CF61F0A8D39001CAA9E /* DownloadCell.swift in Sources */,
 				500658611D8D264600389EA8 /* CachedViewController.swift in Sources */,
 				5006585E1D8CE61700389EA8 /* ControllablePlayer.swift in Sources */,
 				E00187D01EF81DA6009F5AB2 /* Extenstions.swift in Sources */,
@@ -300,6 +308,7 @@
 		503199001D8B85510051E9CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -341,6 +350,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "$(inherited)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -350,6 +360,7 @@
 		503199011D8B85510051E9CA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -384,6 +395,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "$(inherited)";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;

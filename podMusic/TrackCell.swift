@@ -9,7 +9,9 @@
 import UIKit
 import YouTubePlayer
 import AVFoundation
-class TrackCell: UITableViewCell {
+import SwipeCellKit
+
+class TrackCell: SwipeTableViewCell {
     
     // The following string points on WEB location of the track
     var trackUrl: String?
@@ -19,7 +21,6 @@ class TrackCell: UITableViewCell {
     @IBOutlet weak var artistLbl: UILabel!
     @IBOutlet weak var playButton: UIButton?
     @IBOutlet weak var downloadButton: UIButton!
-    @IBOutlet weak var deleteTrack: UIButton!
     @IBOutlet weak var youtubeView: YouTubePlayerView!
     var timer: Timer?
     

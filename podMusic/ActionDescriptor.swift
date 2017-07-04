@@ -35,7 +35,7 @@ enum ActionDescriptor {
         
         let name: String
         switch self {
-        case .download: name = "More"
+        case .download: name = "Download"
         case .flag: name = "Flag"
         case .trash: name = "Trash"
         }

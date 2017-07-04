@@ -10,6 +10,7 @@ import UIKit
 import YouTubePlayer
 import AVFoundation
 import SwipeCellKit
+import HGCircularSlider
 
 class DownloadCell: SwipeTableViewCell {
     
@@ -19,10 +20,9 @@ class DownloadCell: SwipeTableViewCell {
     // Agreement: track is a pair of artist and song on the off-chance
     @IBOutlet weak var songLbl: UILabel!
     @IBOutlet weak var artistLbl: UILabel!
-    @IBOutlet weak var downloadButton: UIButton!
     @IBOutlet weak var youtubeView: YouTubePlayerView!
+    @IBOutlet weak var circularSlider: CircularSlider!
     var timer: Timer?
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -34,36 +34,43 @@ class DownloadCell: SwipeTableViewCell {
         // Configure the view for the selected state
     }
     
-    /**
-     Get the tapped cell
-     */
-    static func getCell(_ sender: AnyObject, table: UITableView) -> TrackCell {
-        let position: CGPoint = sender.convert(CGPoint.zero, to: table)
-        let indexPath = table.indexPathForRow(at: position)
-        let cell: UITableViewCell = table.cellForRow(at: indexPath!)!
-        let senderCell = cell as! TrackCell
-        return senderCell
-    }
-    
     func disableAudioPlayer() {
         if youtubeView.playerState == .Playing {
             podPlayer.pauseMusic()
         }
     }
     
+    /**
+     Get the tapped cell
+     */
+    static func getCell(_ sender: AnyObject, table: UITableView) -> DownloadCell {
+        let position: CGPoint = sender.convert(CGPoint.zero, to: table)
+        let indexPath = table.indexPathForRow(at: position)
+        let cell: UITableViewCell = table.cellForRow(at: indexPath!)!
+        let senderCell = cell as! DownloadCell
+        return senderCell
+    }
+    
     
     /**
      Fill string fields
      */
-    func completeTrackCell(indexPath: IndexPath, data: [[String : String]]) {
+    func completeDownloadCell(indexPath: IndexPath, data: [[String : String]]) {
         self.artistLbl.text = data[(indexPath as NSIndexPath).row]["artist"]
         self.songLbl.text = data[(indexPath as NSIndexPath).row]["song"]
+        if !(self.songLbl.text?.isEmpty)! {
+            self.songLbl.text?.remove(at: (self.songLbl.text?.startIndex)!)
+        }
         self.trackUrl = data[(indexPath as NSIndexPath).row]["url"]
         self.trackImageUrl = data[(indexPath as NSIndexPath).row]["imageURL"]
+        self.circularSlider.alpha = 0
+        self.circularSlider.isEnabled = false
+        self.circularSlider.maximumValue = 100
+        self.circularSlider.minimumValue = 0
         if self.trackUrl?.range(of: "http") != nil {
             let myVideoURL = URL(string: self.trackUrl!)!
             youtubeView.loadVideoURL(myVideoURL)
-            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(TrackCell.disableAudioPlayer), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(DownloadCell.disableAudioPlayer), userInfo: nil, repeats: true)
         }
     }
 }

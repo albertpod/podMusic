@@ -9,13 +9,18 @@
 import UIKit
 import YouTubePlayer
 import AVFoundation
+import SwipeCellKit
 
 // number of music to return
 let bound = 100
 
 /// Controller for searching music in YouTube
-class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, URLSessionDownloadDelegate, UISearchBarDelegate {
-
+class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, URLSessionDownloadDelegate, UISearchBarDelegate, SwipeTableViewCellDelegate {
+    
+    var buttonDisplayMode: ButtonDisplayMode = .titleAndImage
+    var buttonStyle: ButtonStyle = .backgroundColor
+    var defaultOptions = SwipeTableOptions()
+    var downloader: Downloader?
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTableView: UITableView!
     var localMusicData: [[String : String]] = [[:]]
@@ -61,7 +66,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 if contents.count < 2 {
                     contents.append("")
                 }
-                let entity = ["artist" : contents[1], "song" : contents[0], "id" : videoId, "url" : videoUrl, "imageURL": highPhoto]
+                let entity = ["artist" : contents[0], "song" : contents[1], "id" : videoId, "url" : videoUrl, "imageURL": highPhoto]
                 localMusicData.append(entity)
             }
         } catch let error as NSError {
@@ -80,22 +85,19 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchBar.text = ""
     }
     
-    func playMusicButton(_ sender: AnyObject) {
-        let senderCell = TrackCell.getCell(sender, table: searchTableView)
-        podPlayer.musicData = localMusicData
-        if senderCell.trackUrl == podPlayer.currentTrack?.trackUrl {
-            podPlayer.pauseMusic()
-        } else {
-            podPlayer.playMusic(senderCell)
-        }
-        self.searchTableView.reloadData()
+    func updateBytes(senderCell: DownloadCell) {
+        senderCell.circularSlider.endPointValue = CGFloat((downloader?.downloadedBytes)!)
     }
     
-    func download(_ sender: AnyObject) {
-        let senderCell = TrackCell.getCell(sender, table: searchTableView)
+    func download(indexPath: IndexPath) {
+        let senderCell = searchTableView.cellForRow(at: indexPath) as! DownloadCell
         if let url = senderCell.trackUrl {
             print(url)
-            Downloader(informationCell: senderCell).performGet(url)
+            downloader = Downloader(informationCell: senderCell)
+            downloader?.performGet(url)
+            senderCell.circularSlider.maximumValue = CGFloat((downloader?.maxSize)!)
+            senderCell.circularSlider.endPointValue = CGFloat(1916531)
+            senderCell.circularSlider.alpha = 100
         }
     }
     
@@ -148,12 +150,47 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = searchTableView.dequeueReusableCell(withIdentifier: "TrackCell")! as! TrackCell
-        cell.completeTrackCell(indexPath: indexPath, data: localMusicData)
-        
-        //cell.playButton.addTarget(self, action: #selector(SearchViewController.playMusicButton(_:)), for: .touchUpInside)
+        let cell = searchTableView.dequeueReusableCell(withIdentifier: "DownloadCell")! as! DownloadCell
+        cell.delegate = self
+        cell.completeDownloadCell(indexPath: indexPath, data: localMusicData)
         //cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction] {
+        if orientation == .right {
+            let download = SwipeAction(style: .default, title: nil) { action, indexPath in
+                self.download(indexPath: indexPath)
+            }
+            configure(action: download, with: .download)
+            return [download]
+            // flag.hidesWhenSelected = false
+            
+        }
+        return []
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeTableOptions {
+        var options = SwipeTableOptions()
+        options.expansionStyle = .selection
+        options.transitionStyle = .drag
+        print("swiped")
+        return options
+    }
+    
+    func configure(action: SwipeAction, with descriptor: ActionDescriptor) {
+        action.title = descriptor.title(forDisplayMode: buttonDisplayMode)
+        action.image = descriptor.image(forStyle: buttonStyle, displayMode: buttonDisplayMode)
+        
+        switch buttonStyle {
+        case .backgroundColor:
+            action.backgroundColor = descriptor.color
+            action.font = .systemFont(ofSize: 13)
+        case .circular:
+            action.backgroundColor = .clear
+            action.textColor = descriptor.color
+            action.font = .systemFont(ofSize: 10)
+        }
     }
 
 }

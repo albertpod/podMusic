@@ -13,16 +13,17 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     
     let downloadAPI = "https://www.youtubeinmp3.com/fetch/?video="
     
-    var url : URL?
+    var url: URL?
     var downloaded: CachedMusic
+    var maxSize: Int64 = 0
+    var downloadedBytes: Int64 = 0
     
-    init(informationCell: TrackCell) {
+    init(informationCell: DownloadCell) {
         let temp = CachedMusic()
         temp.artistName = informationCell.artistLbl.text
         temp.songName = informationCell.songLbl.text
         temp.trackPath = ""
         temp.trackImageUrl = informationCell.trackImageUrl!
-        
         downloaded = temp
     }
     
@@ -44,13 +45,17 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
                 realm.add(self.downloaded)
             }
         }
+        downloadedBytes = 0
+        maxSize = 0
     }
     
     /** 
      This is to track progress
      */
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
-        print(totalBytesWritten)
+        maxSize = totalBytesExpectedToWrite
+        downloadedBytes = totalBytesWritten
+        print(totalBytesWritten, totalBytesExpectedToWrite)
     }
     
     /**

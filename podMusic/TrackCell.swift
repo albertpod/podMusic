@@ -20,8 +20,6 @@ class TrackCell: SwipeTableViewCell {
     @IBOutlet weak var songLbl: UILabel!
     @IBOutlet weak var artistLbl: UILabel!
     @IBOutlet weak var playButton: UIButton?
-    @IBOutlet weak var downloadButton: UIButton!
-    @IBOutlet weak var youtubeView: YouTubePlayerView!
     var timer: Timer?
     
     override func awakeFromNib() {
@@ -46,13 +44,6 @@ class TrackCell: SwipeTableViewCell {
         return senderCell
     }
     
-    func disableAudioPlayer() {
-        if youtubeView.playerState == .Playing {
-            podPlayer.pauseMusic()
-        }
-    }
-    
-    
     /**
      Fill string fields 
      */
@@ -61,11 +52,6 @@ class TrackCell: SwipeTableViewCell {
         self.songLbl.text = data[(indexPath as NSIndexPath).row]["song"]
         self.trackUrl = data[(indexPath as NSIndexPath).row]["url"]
         self.trackImageUrl = data[(indexPath as NSIndexPath).row]["imageURL"]
-        if self.trackUrl?.range(of: "http") != nil {
-            let myVideoURL = URL(string: self.trackUrl!)!
-            youtubeView.loadVideoURL(myVideoURL)
-            timer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(TrackCell.disableAudioPlayer), userInfo: nil, repeats: true)
-        }
         if let playButton = self.playButton {
             switch podPlayer.state {
             case .pause, .stop:

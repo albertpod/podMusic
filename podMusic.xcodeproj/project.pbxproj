@@ -104,9 +104,9 @@
 			children = (
 				505F9D001D8C38BB00949CC9 /* Downloader.swift */,
 				503199081D8BDD1E0051E9CA /* TrackCell.swift */,
+				E0671CF51F0A8D39001CAA9E /* DownloadCell.swift */,
 				50951D961D8C2D6700D2D653 /* CachedMusic.swift */,
 				5006585D1D8CE61700389EA8 /* ControllablePlayer.swift */,
-				E0671CF51F0A8D39001CAA9E /* DownloadCell.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";

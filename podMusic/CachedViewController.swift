@@ -54,7 +54,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     }
     
     func deleteMusic(index: IndexPath) {
-        let senderCell = cachedTableView.cellForRow(at: index) as! TrackCell //TrackCell.getCell(sender, table: cachedTableView)
+        let senderCell = cachedTableView.cellForRow(at: index) as! TrackCell
         DispatchQueue(label: "albertpod.podMusic").sync {
             let realm = try! Realm()
             let objects = realm.objects(CachedMusic.self)

@@ -1,4 +1,5 @@
 PODS:
+  - HGCircularSlider (2.0.0)
   - Realm (2.4.2):
     - Realm/Headers (= 2.4.2)
   - Realm/Headers (2.4.2)
@@ -8,6 +9,7 @@ PODS:
   - YouTubePlayer (0.4.0)
 
 DEPENDENCIES:
+  - HGCircularSlider (~> 2.0.0)
   - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
   - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
   - SwipeCellKit
@@ -34,11 +36,12 @@ CHECKOUT OPTIONS:
     :submodules: true
 
 SPEC CHECKSUMS:
+  HGCircularSlider: 92e2ee098c814709f455b8f46cd9008147f6a869
   Realm: d27b758e12d62a3371879a065d4c40aa212c5a54
   RealmSwift: a2485af6fd62369e7126ce0af43ff5430de1e77a
   SwipeCellKit: 027b1df87c42b3c88a0b407f9d0fa1718d521d62
   YouTubePlayer: 028451f6772f372d4759866db99824c676ac1473
 
-PODFILE CHECKSUM: f93c69b65b03f67204c7744935fc41aa6c3b9fa4
+PODFILE CHECKSUM: 8875a8143c6bd3d1ce842e399e72de1a2e5130d7
 
 COCOAPODS: 1.1.1

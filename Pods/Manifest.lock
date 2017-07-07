@@ -1,5 +1,6 @@
 PODS:
   - HGCircularSlider (2.0.0)
+  - NFDownloadButton (0.0.2)
   - Realm (2.4.2):
     - Realm/Headers (= 2.4.2)
   - Realm/Headers (2.4.2)
@@ -10,6 +11,7 @@ PODS:
 
 DEPENDENCIES:
   - HGCircularSlider (~> 2.0.0)
+  - NFDownloadButton (~> 0.0.2)
   - Realm (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
   - RealmSwift (from `https://github.com/realm/realm-cocoa.git`, branch `master`)
   - SwipeCellKit
@@ -37,11 +39,12 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   HGCircularSlider: 92e2ee098c814709f455b8f46cd9008147f6a869
+  NFDownloadButton: ea79486ae2c68acc8202eae1b07bacef4684c6cc
   Realm: d27b758e12d62a3371879a065d4c40aa212c5a54
   RealmSwift: a2485af6fd62369e7126ce0af43ff5430de1e77a
   SwipeCellKit: 027b1df87c42b3c88a0b407f9d0fa1718d521d62
   YouTubePlayer: 028451f6772f372d4759866db99824c676ac1473
 
-PODFILE CHECKSUM: 8875a8143c6bd3d1ce842e399e72de1a2e5130d7
+PODFILE CHECKSUM: 75e632218ab4ebaa3218912dcee0ecb0031ac395
 
 COCOAPODS: 1.1.1

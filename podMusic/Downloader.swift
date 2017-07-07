@@ -15,8 +15,7 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     
     var url: URL?
     var downloaded: CachedMusic
-    var maxSize: Int64 = 0
-    var downloadedBytes: Int64 = 0
+    var downloadCell: DownloadCell!
     
     init(informationCell: DownloadCell) {
         let temp = CachedMusic()
@@ -38,6 +37,9 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         let destinationUrl = documentsUrl!.appendingPathComponent(songIdenfifier)
         let dataFromURL = try? Data(contentsOf: location)
         try? dataFromURL?.write(to: destinationUrl, options: [.atomic])
+        /*guard downloadCell.circularSlider.maximumValue > 0 else {
+            return
+        }*/
         DispatchQueue(label: "albertpod.podMusic").async {
             let realm = try! Realm()
             self.downloaded.trackPath = songIdenfifier
@@ -45,17 +47,19 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
                 realm.add(self.downloaded)
             }
         }
-        downloadedBytes = 0
-        maxSize = 0
     }
     
     /** 
      This is to track progress
      */
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
-        maxSize = totalBytesExpectedToWrite
-        downloadedBytes = totalBytesWritten
         print(totalBytesWritten, totalBytesExpectedToWrite)
+        //downloadCell.circularSlider.maximumValue = CGFloat(totalBytesExpectedToWrite)
+        if totalBytesExpectedToWrite > 0 {
+            DispatchQueue.main.async {
+                //self.downloadCell.circularSlider.endPointValue = CGFloat(totalBytesWritten)
+            }
+        }
     }
     
     /**
@@ -78,7 +82,11 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     /**
      Method for file downloading
      */
-    func performGet(_ param: String) {
+    func performGet(_ param: String, _ cell: DownloadCell) {
+        self.downloadCell = cell
+        if self.url != nil {
+            return
+        }
         self.url = URL(string: downloadAPI + param)
         print((self.url?.absoluteString)!)
         let sessionConfig = URLSessionConfiguration.background(withIdentifier: (self.url?.absoluteString)!)

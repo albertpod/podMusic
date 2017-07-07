@@ -176,52 +176,19 @@
                                                         <constraint firstAttribute="width" constant="95" id="3nM-te-f8l"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgI-BM-Ura" customClass="CircularSlider" customModule="HGCircularSlider">
-                                                    <rect key="frame" x="316" y="33" width="40" height="40"/>
-                                                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="40" id="DpN-8D-NpN"/>
-                                                        <constraint firstAttribute="width" constant="40" id="p4L-j2-fHm"/>
-                                                    </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
-                                                            <real key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="trackFillColor">
-                                                            <color key="value" red="0.14901960780000001" green="0.83921568629999999" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="diskColor">
-                                                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="diskFillColor">
-                                                            <color key="value" red="0.14901960780000001" green="0.83921568629999999" blue="0.99215686270000003" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="trackColor">
-                                                            <color key="value" red="1" green="1" blue="1" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="thumbRadius">
-                                                            <real key="value" value="1"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="endThumbStrokeHighlightedColor">
-                                                            <color key="value" red="0.80000000000000004" green="0.57254901960000004" blue="0.88235294119999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="endThumbStrokeColor">
-                                                            <color key="value" red="0.14901960780000001" green="0.83921568629999999" blue="0.99215686270000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="minimumValue">
-                                                            <real key="value" value="0.0"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="maximumValue">
-                                                            <real key="value" value="100"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                    </userDefinedRuntimeAttributes>
-                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9xB-zO-LGg">
                                                     <rect key="frame" x="130" y="21" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SJi-AT-n6L" customClass="NFDownloadButton" customModule="NFDownloadButton">
+                                                    <rect key="frame" x="337" y="38" width="30" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="30" id="nIa-y4-bSz"/>
+                                                        <constraint firstAttribute="height" constant="31" id="yhh-uE-71S"/>
+                                                    </constraints>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" red="0.21803616751269039" green="0.21803616751269039" blue="0.21803616751269039" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
@@ -230,16 +197,16 @@
                                                 <constraint firstAttribute="bottomMargin" secondItem="5Wh-oi-Kt7" secondAttribute="bottom" constant="0.5" id="Dgf-PZ-Yhv"/>
                                                 <constraint firstItem="5Wh-oi-Kt7" firstAttribute="top" secondItem="hm4-ra-u1d" secondAttribute="topMargin" constant="-5" id="ErH-hh-NqN"/>
                                                 <constraint firstItem="VTM-1P-hPz" firstAttribute="top" secondItem="9xB-zO-LGg" secondAttribute="bottom" constant="27" id="FSm-nN-xgS"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="wgI-BM-Ura" secondAttribute="trailing" constant="11" id="N1D-Rc-l9s"/>
-                                                <constraint firstItem="wgI-BM-Ura" firstAttribute="centerY" secondItem="hm4-ra-u1d" secondAttribute="centerY" id="a2a-b4-trB"/>
+                                                <constraint firstItem="SJi-AT-n6L" firstAttribute="centerY" secondItem="hm4-ra-u1d" secondAttribute="centerY" id="MIi-4i-ZcN"/>
                                                 <constraint firstAttribute="leadingMargin" secondItem="5Wh-oi-Kt7" secondAttribute="leading" id="bze-rK-nb9"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="SJi-AT-n6L" secondAttribute="trailing" id="hlo-2v-gCV"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="VTM-1P-hPz" secondAttribute="bottom" constant="14" id="uu6-Gk-UDw"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="artistLbl" destination="9xB-zO-LGg" id="Dgc-Xn-Vo8"/>
-                                            <outlet property="circularSlider" destination="wgI-BM-Ura" id="xd5-jg-W40"/>
+                                            <outlet property="downloadButton" destination="SJi-AT-n6L" id="yyc-mI-0tF"/>
                                             <outlet property="songLbl" destination="VTM-1P-hPz" id="zAz-cw-FOr"/>
                                             <outlet property="youtubeView" destination="5Wh-oi-Kt7" id="Rd9-eh-S1O"/>
                                         </connections>

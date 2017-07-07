@@ -9,6 +9,7 @@ target 'podMusic' do
   pod 'YouTubePlayer'
   pod 'SwipeCellKit'
   pod 'HGCircularSlider', '~> 2.0.0'
+  pod 'NFDownloadButton', '~> 0.0.2'
   # Pods for podMusic
 
 end

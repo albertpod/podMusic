@@ -85,19 +85,12 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         searchBar.text = ""
     }
     
-    func updateBytes(senderCell: DownloadCell) {
-        senderCell.circularSlider.endPointValue = CGFloat((downloader?.downloadedBytes)!)
-    }
-    
     func download(indexPath: IndexPath) {
         let senderCell = searchTableView.cellForRow(at: indexPath) as! DownloadCell
         if let url = senderCell.trackUrl {
-            print(url)
             downloader = Downloader(informationCell: senderCell)
-            downloader?.performGet(url)
-            senderCell.circularSlider.maximumValue = CGFloat((downloader?.maxSize)!)
-            senderCell.circularSlider.endPointValue = CGFloat(1916531)
-            senderCell.circularSlider.alpha = 100
+            downloader?.performGet(url, senderCell)
+            //senderCell.circularSlider.alpha = 100
         }
     }
     

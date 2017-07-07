@@ -10,7 +10,7 @@ import UIKit
 import YouTubePlayer
 import AVFoundation
 import SwipeCellKit
-import HGCircularSlider
+import NFDownloadButton
 
 class DownloadCell: SwipeTableViewCell {
     
@@ -21,7 +21,7 @@ class DownloadCell: SwipeTableViewCell {
     @IBOutlet weak var songLbl: UILabel!
     @IBOutlet weak var artistLbl: UILabel!
     @IBOutlet weak var youtubeView: YouTubePlayerView!
-    @IBOutlet weak var circularSlider: CircularSlider!
+    @IBOutlet weak var downloadButton: NFDownloadButton!
     var timer: Timer?
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -63,10 +63,10 @@ class DownloadCell: SwipeTableViewCell {
         }
         self.trackUrl = data[(indexPath as NSIndexPath).row]["url"]
         self.trackImageUrl = data[(indexPath as NSIndexPath).row]["imageURL"]
-        self.circularSlider.alpha = 0
+        /*self.circularSlider.alpha = 0
         self.circularSlider.isEnabled = false
         self.circularSlider.maximumValue = 100
-        self.circularSlider.minimumValue = 0
+        self.circularSlider.minimumValue = 0*/
         if self.trackUrl?.range(of: "http") != nil {
             let myVideoURL = URL(string: self.trackUrl!)!
             youtubeView.loadVideoURL(myVideoURL)

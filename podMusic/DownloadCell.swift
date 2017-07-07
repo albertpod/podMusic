@@ -63,6 +63,8 @@ class DownloadCell: SwipeTableViewCell {
         }
         self.trackUrl = data[(indexPath as NSIndexPath).row]["url"]
         self.trackImageUrl = data[(indexPath as NSIndexPath).row]["imageURL"]
+        self.downloadButton.alpha = 0
+        //self.downloadButton.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0)
         /*self.circularSlider.alpha = 0
         self.circularSlider.isEnabled = false
         self.circularSlider.maximumValue = 100

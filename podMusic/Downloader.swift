@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import NFDownloadButton
 
 class Downloader : NSObject, URLSessionDownloadDelegate {
     
@@ -57,6 +58,7 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         //downloadCell.circularSlider.maximumValue = CGFloat(totalBytesExpectedToWrite)
         if totalBytesExpectedToWrite > 0 {
             DispatchQueue.main.async {
+                self.downloadCell.downloadButton.downloadPercent = 0.4
                 //self.downloadCell.circularSlider.endPointValue = CGFloat(totalBytesWritten)
             }
         }
@@ -87,6 +89,7 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         if self.url != nil {
             return
         }
+        cell.downloadButton.downloadState = NFDownloadButtonState.readyToDownload
         self.url = URL(string: downloadAPI + param)
         print((self.url?.absoluteString)!)
         let sessionConfig = URLSessionConfiguration.background(withIdentifier: (self.url?.absoluteString)!)

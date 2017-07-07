@@ -10,6 +10,7 @@ import UIKit
 import YouTubePlayer
 import AVFoundation
 import SwipeCellKit
+import NFDownloadButton
 
 // number of music to return
 let bound = 100
@@ -90,7 +91,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let url = senderCell.trackUrl {
             downloader = Downloader(informationCell: senderCell)
             downloader?.performGet(url, senderCell)
-            //senderCell.circularSlider.alpha = 100
+            senderCell.downloadButton.alpha = 100
+            senderCell.downloadButton.downloadState = NFDownloadButtonState.willDownload
         }
     }
     

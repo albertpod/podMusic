@@ -33,6 +33,7 @@ class PlayerViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.registeredPlayerState = .pause
                     self.playMusicButton.setTitle("Play", for: .normal)
+                    self.playMusicButton.setImage(#imageLiteral(resourceName: "Play"), for: .normal)
                 }
             }
         default:
@@ -49,6 +50,7 @@ class PlayerViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.registeredPlayerState = .play
                     self.playMusicButton.setTitle("Playing", for: .normal)
+                    self.playMusicButton.setImage(#imageLiteral(resourceName: "Pause"), for: .normal)
                     self.updateName()
                 }
             }
@@ -134,16 +136,5 @@ class PlayerViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

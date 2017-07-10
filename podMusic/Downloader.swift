@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 import NFDownloadButton
+import UserNotifications
 
 class Downloader : NSObject, URLSessionDownloadDelegate {
     
@@ -17,6 +18,9 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     var url: URL?
     var downloaded: CachedMusic
     var downloadCell: DownloadCell!
+    
+    // handler for tracking dummy download with -1
+    var totalBytesToload: Int64 = -1
     
     init(informationCell: DownloadCell) {
         let temp = CachedMusic()
@@ -32,6 +36,9 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
      The downloaded data is being saved to the iPhone storage and an object is being recorded to Realm database.
      */
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        guard totalBytesToload > 1000 else {
+            return
+        }
         //copy downloaded data to your documents directory with same names as source file
         let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
         let songIdenfifier = UUID().uuidString + ".mp3"
@@ -41,25 +48,32 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         /*guard downloadCell.circularSlider.maximumValue > 0 else {
             return
         }*/
-        DispatchQueue(label: "albertpod.podMusic").async {
+        DispatchQueue(label: "save_track").async {
             let realm = try! Realm()
             self.downloaded.trackPath = songIdenfifier
             try! realm.write {
                 realm.add(self.downloaded)
             }
+            self.totalBytesToload = -1
         }
     }
     
     /** 
      This is to track progress
      */
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64){
-        print(totalBytesWritten, totalBytesExpectedToWrite)
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         //downloadCell.circularSlider.maximumValue = CGFloat(totalBytesExpectedToWrite)
-        if totalBytesExpectedToWrite > 0 {
+        totalBytesToload = totalBytesExpectedToWrite
+        if totalBytesToload > 1000 {
             DispatchQueue.main.async {
-                self.downloadCell.downloadButton.downloadPercent = 0.4
+                print(totalBytesWritten, totalBytesExpectedToWrite)
+                print(CGFloat(totalBytesWritten) / CGFloat(totalBytesExpectedToWrite))
+                self.downloadCell.downloadButton.downloadPercent = CGFloat(totalBytesWritten) / CGFloat(totalBytesExpectedToWrite)
                 //self.downloadCell.circularSlider.endPointValue = CGFloat(totalBytesWritten)
+            }
+        } else {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.5, animations: {self.downloadCell.downloadButton.alpha = 0; self.downloadCell.errorLbl.alpha = 100})
             }
         }
     }

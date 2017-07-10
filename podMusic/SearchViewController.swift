@@ -24,6 +24,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var downloader: Downloader?
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var searchTableView: UITableView!
+    var lastSearch: String?
     var localMusicData: [[String : String]] = [[:]]
     enum RequestType {
         case search
@@ -31,6 +32,17 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         case getRanking
     }
     
+    lazy var refreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(SearchViewController.handleRefresh(refreshControl:)), for: UIControlEvents.valueChanged)
+        return refreshControl
+    }()
+    
+    func handleRefresh(refreshControl: UIRefreshControl) {
+        performGetRequest(params: lastSearch)
+        searchTableView.reloadData()
+        refreshControl.endRefreshing()
+    }
     
     let youtubeKeyAPI = "AIzaSyCjXrcStj6oZPYNQ_dYH5hnDz0vuyUbqxU"
     
@@ -91,7 +103,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         if let url = senderCell.trackUrl {
             downloader = Downloader(informationCell: senderCell)
             downloader?.performGet(url, senderCell)
-            senderCell.downloadButton.alpha = 100
+            UIView.animate(withDuration: 0.4, animations: {senderCell.errorLbl.alpha = 0; senderCell.downloadImage.alpha = 0; senderCell.downloadButton.alpha = 100})
             senderCell.downloadButton.downloadState = NFDownloadButtonState.willDownload
         }
     }
@@ -103,6 +115,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         } else {
             getAPI = "https://www.googleapis.com/youtube/v3/search/?part=snippet&maxResults=30&q=Paul%20Kalkbrenner&type=video&key=\(youtubeKeyAPI)"
         }
+        lastSearch = params
         
         getAPI = getAPI.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed)!
         
@@ -131,6 +144,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         localMusicData.removeAll()
         performGetRequest()
         NotificationCenter.default.addObserver(self, selector: #selector(SearchViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
+        searchTableView.addSubview(refreshControl)
     }
 
     override func didReceiveMemoryWarning() {
@@ -148,7 +162,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         let cell = searchTableView.dequeueReusableCell(withIdentifier: "DownloadCell")! as! DownloadCell
         cell.delegate = self
         cell.completeDownloadCell(indexPath: indexPath, data: localMusicData)
-        //cell.downloadButton.addTarget(self, action: #selector(SearchViewController.download(_:)), for: .touchUpInside)
         return cell
     }
     

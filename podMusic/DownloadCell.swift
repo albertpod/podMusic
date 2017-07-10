@@ -18,11 +18,14 @@ class DownloadCell: SwipeTableViewCell {
     var trackUrl: String?
     var trackImageUrl: String?
     // Agreement: track is a pair of artist and song on the off-chance
+    @IBOutlet weak var downloadImage: UIImageView!
+    @IBOutlet weak var errorLbl: UILabel!
     @IBOutlet weak var songLbl: UILabel!
     @IBOutlet weak var artistLbl: UILabel!
     @IBOutlet weak var youtubeView: YouTubePlayerView!
     @IBOutlet weak var downloadButton: NFDownloadButton!
     var timer: Timer?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -58,17 +61,15 @@ class DownloadCell: SwipeTableViewCell {
     func completeDownloadCell(indexPath: IndexPath, data: [[String : String]]) {
         self.artistLbl.text = data[(indexPath as NSIndexPath).row]["artist"]
         self.songLbl.text = data[(indexPath as NSIndexPath).row]["song"]
+        self.errorLbl.alpha = 0.0
+        self.downloadImage.alpha = 100
         if !(self.songLbl.text?.isEmpty)! {
             self.songLbl.text?.remove(at: (self.songLbl.text?.startIndex)!)
         }
         self.trackUrl = data[(indexPath as NSIndexPath).row]["url"]
         self.trackImageUrl = data[(indexPath as NSIndexPath).row]["imageURL"]
         self.downloadButton.alpha = 0
-        //self.downloadButton.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0)
-        /*self.circularSlider.alpha = 0
-        self.circularSlider.isEnabled = false
-        self.circularSlider.maximumValue = 100
-        self.circularSlider.minimumValue = 0*/
+        self.errorLbl.alpha = 0
         if self.trackUrl?.range(of: "http") != nil {
             let myVideoURL = URL(string: self.trackUrl!)!
             youtubeView.loadVideoURL(myVideoURL)

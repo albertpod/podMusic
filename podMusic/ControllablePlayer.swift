@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 import UIKit
+import MediaPlayer
 
 /// Player of the application
 class ControllablePlayer {
@@ -47,6 +48,9 @@ class ControllablePlayer {
     // Playing list
     var musicData: [[String : String]] = [[:]]
     
+    // Holder of information for representing data in lock screen, bottom panel etc.
+    let infoCenter = MPNowPlayingInfoCenter.default()
+    
     /**
      Search for the particular MusicNode in musicData list
      
@@ -54,15 +58,17 @@ class ControllablePlayer {
      
      - Returns: Desired.
      */
-    func searchForTrack(url: String) -> MusicNode? {
+    func searchForTrack(trackCell: TrackCell) -> MusicNode? {
         var temp = MusicNode()
+        let musicURL = trackCell.trackUrl
+        let photoURL = trackCell.trackImageUrl
         for (index, item) in musicData.enumerated() {
-            if item["url"] == url {
+            if item["url"] == musicURL {
                 temp.trackPostionInList = index
                 temp.trackArtist = item["artist"]!
                 temp.trackName = item["song"]!
-                temp.trackUrl = url
-                temp.trackImageURL = item["imageURL"]
+                temp.trackUrl = musicURL
+                temp.trackImageURL = photoURL
                 return temp
             }
         }
@@ -79,7 +85,7 @@ class ControllablePlayer {
         var temp: String!
         
         // Fill all fields in currentTrack variable
-        currentTrack = searchForTrack(url: (cell.trackUrl)!)
+        currentTrack = searchForTrack(trackCell: cell)
         temp = currentTrack?.trackUrl
         
         if (currentTrack?.trackUrl?.range(of: "https") == nil) {
@@ -91,6 +97,7 @@ class ControllablePlayer {
         player.rate = 1.0
         player.play()
         state = .play
+        infoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: currentTrack?.trackName as Any, MPMediaItemPropertyArtist: currentTrack?.trackArtist as Any]
     }
     
     /**
@@ -101,6 +108,12 @@ class ControllablePlayer {
         player.rate = 0.0
         //currentTrack = nil
         state = .pause
+    }
+    
+    func resumeMusic() {
+        player.rate = 1.0
+        player.play()
+        state = .play
     }
     
     /**
@@ -144,5 +157,6 @@ class ControllablePlayer {
         player.rate = 1.0
         player.play()
         state = .play
+        infoCenter.nowPlayingInfo = [MPMediaItemPropertyTitle: currentTrack?.trackName as Any, MPMediaItemPropertyArtist: currentTrack?.trackArtist as Any]
     }
 }

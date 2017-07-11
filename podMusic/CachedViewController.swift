@@ -45,7 +45,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     func playMusicButton(_ sender: AnyObject) {
         let senderCell = TrackCell.getCell(sender, table: cachedTableView)
-        if senderCell.trackUrl == podPlayer.currentTrack?.trackUrl {
+        if senderCell.trackUrl == podPlayer.currentTrack?.trackUrl && podPlayer.state == .play {
             podPlayer.pauseMusic()
         } else {
             podPlayer.playMusic(senderCell)
@@ -103,7 +103,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
             let realm = try! Realm()
             let data = realm.objects(CachedMusic.self)
             for item in data {
-                let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!, "imageURL" : item.trackImageUrl!]
+                let entity = ["artist" : item.artistName!, "song" : item.songName!, "url" : item.trackPath!, "imageURL" : item.trackImagePath!]
                 podPlayer.musicData.append(entity)
             }
             self.cachedTableView.reloadData()
@@ -116,6 +116,7 @@ class CachedViewController: UIViewController, UITableViewDelegate, UITableViewDa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addObserver(self, selector: #selector(CachedViewController.updateTableView), name: NSNotification.Name(rawValue: "update"), object: nil)
         podPlayer.musicData.removeAll()
         NotificationCenter.default.addObserver(self, selector: #selector(CachedViewController.nextTrack), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: podPlayer.player.currentItem)
         timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(CachedViewController.updater), userInfo: nil, repeats: true)

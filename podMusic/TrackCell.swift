@@ -56,6 +56,7 @@ class TrackCell: SwipeTableViewCell {
             switch podPlayer.state {
             case .pause, .stop:
                 playButton.setTitle("Play", for: .normal)
+                playButton.setImage(#imageLiteral(resourceName: "Play"), for: .normal)
             default:
                 if podPlayer.currentTrack?.trackUrl == self.trackUrl {
                     playButton.setTitle("Playing", for: .normal)

@@ -23,10 +23,15 @@ class PlayerViewController: UIViewController {
     var timer: Timer!
     // last time registered player's state
     var registeredPlayerState = ControllablePlayer.State.stop
+    
+    var currentImageUrl: String?
     /**
      Updates the playing music time
      */
     func updateTime() {
+        if currentImageUrl != podPlayer.currentTrack?.trackImageURL {
+            self.updateName()
+        }
         switch podPlayer.state {
         case .pause, .stop:
             if registeredPlayerState == .play {
@@ -85,10 +90,15 @@ class PlayerViewController: UIViewController {
             self.artistNameLbl.text = podPlayer.currentTrack?.trackArtist
             self.songNameLbl.text = podPlayer.currentTrack?.trackName
             if let urlString = podPlayer.currentTrack?.trackImageURL! {
-                let url = URL.init(string: urlString)!
-                self.songImage?.downloadedFrom(url: url)
+                if self.currentImageUrl != urlString {
+                    self.currentImageUrl = urlString
+                    let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path
+                    let tempPath = documentsUrl! + "/" + urlString
+                    self.songImage?.image = UIImage(contentsOfFile: tempPath)
+                    self.songImage?.contentMode = .scaleAspectFill
+                }
             } else {
-                self.songImage = nil
+                self.currentImageUrl = nil
             }
             if let song = podPlayer.player.currentItem {
                 if !song.duration.seconds.isNaN {

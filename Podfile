@@ -8,7 +8,7 @@ target 'podMusic' do
   pod 'RealmSwift', git: 'https://github.com/realm/realm-cocoa.git', branch: 'master', :submodules => true
   pod 'YouTubePlayer'
   pod 'SwipeCellKit'
-  pod 'HGCircularSlider', '~> 2.0.0'
+  #pod 'HGCircularSlider', '~> 2.0.0'
   pod 'NFDownloadButton', '~> 0.0.2'
   # Pods for podMusic
 

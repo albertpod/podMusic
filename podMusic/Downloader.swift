@@ -15,7 +15,8 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
     
     let downloadAPI = "https://www.youtubeinmp3.com/fetch/?video="
     
-    var url: URL?
+    var musicURL: URL?
+    var phototURL: URL?
     var downloaded: CachedMusic
     var downloadCell: DownloadCell!
     
@@ -27,8 +28,34 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         temp.artistName = informationCell.artistLbl.text
         temp.songName = informationCell.songLbl.text
         temp.trackPath = ""
-        temp.trackImageUrl = informationCell.trackImageUrl!
+        temp.trackImagePath = ""
         downloaded = temp
+    }
+    
+    func finishDownloading(url: URL) {
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 200,
+                let mimeType = response?.mimeType, mimeType.hasPrefix("image"),
+                let data = data, error == nil,
+                let image = UIImage(data: data)
+                else { return }
+            do {
+                let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+                let photoIdenfifier = UUID().uuidString + ".png"
+                let destinationUrl = documentsUrl!.appendingPathComponent(photoIdenfifier)
+                if let pngImageData = UIImagePNGRepresentation(image) {
+                    try pngImageData.write(to: destinationUrl, options: .atomic)
+                    self.downloaded.trackImagePath = photoIdenfifier
+                }
+            } catch { }
+            DispatchQueue(label: "save_track").async {
+                let realm = try! Realm()
+                try! realm.write {
+                    realm.add(self.downloaded)
+                }
+                self.totalBytesToload = -1
+            }
+        }.resume()
     }
     
     /**
@@ -45,17 +72,12 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
         let destinationUrl = documentsUrl!.appendingPathComponent(songIdenfifier)
         let dataFromURL = try? Data(contentsOf: location)
         try? dataFromURL?.write(to: destinationUrl, options: [.atomic])
+        self.downloaded.trackPath = songIdenfifier
+        self.finishDownloading(url: self.phototURL!)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "update"), object: nil)
         /*guard downloadCell.circularSlider.maximumValue > 0 else {
             return
         }*/
-        DispatchQueue(label: "save_track").async {
-            let realm = try! Realm()
-            self.downloaded.trackPath = songIdenfifier
-            try! realm.write {
-                realm.add(self.downloaded)
-            }
-            self.totalBytesToload = -1
-        }
     }
     
     /** 
@@ -100,15 +122,16 @@ class Downloader : NSObject, URLSessionDownloadDelegate {
      */
     func performGet(_ param: String, _ cell: DownloadCell) {
         self.downloadCell = cell
-        if self.url != nil {
+        if self.musicURL != nil {
             return
         }
         cell.downloadButton.downloadState = NFDownloadButtonState.readyToDownload
-        self.url = URL(string: downloadAPI + param)
-        print((self.url?.absoluteString)!)
-        let sessionConfig = URLSessionConfiguration.background(withIdentifier: (self.url?.absoluteString)!)
+        self.musicURL = URL(string: downloadAPI + param)
+        self.phototURL = URL(string: cell.trackImageUrl!)
+        print((self.musicURL?.absoluteString)!)
+        let sessionConfig = URLSessionConfiguration.background(withIdentifier: (self.musicURL?.absoluteString)!)
         let session = Foundation.URLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
-        let task = session.downloadTask(with: (self.url)!)
+        let task = session.downloadTask(with: (self.musicURL)!)
         task.resume()
     }
 }

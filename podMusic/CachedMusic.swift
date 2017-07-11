@@ -18,5 +18,5 @@ class CachedMusic: Object {
     // The following string points on the physical location of the track
     dynamic var trackPath: String?
     // change to PATH
-    dynamic var trackImageUrl: String?
+    dynamic var trackImagePath: String?
 }

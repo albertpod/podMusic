@@ -8,6 +8,7 @@
 
 import UIKit
 import AVFoundation
+import MediaPlayer
 
 let podPlayer = ControllablePlayer()
 
@@ -30,8 +31,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch let error as NSError {
             print(error.localizedDescription)
         }
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        UIApplication.shared.statusBarStyle = .lightContent
+        
+        let commandCenter = MPRemoteCommandCenter.shared()
+        
+        commandCenter.previousTrackCommand.isEnabled = true;
+        commandCenter.previousTrackCommand.addTarget(self, action: #selector(AppDelegate.prevTrack(note:)))
+
+        commandCenter.nextTrackCommand.isEnabled = true
+        commandCenter.nextTrackCommand.addTarget(self, action: #selector(AppDelegate.nextTrack(note:)))
+
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget(self, action: #selector(AppDelegate.playTrack(note:)))
+
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget(self, action: #selector(AppDelegate.pauseTrack(note:)))
+        
         return true
     }
+    
+//    override func remoteControlReceived(with event: UIEvent?) {
+//        let rc = event!.subtype
+//        print("does this work? \(rc.rawValue)")
+//    }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         return true
@@ -39,8 +62,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func nextTrack(note: NSNotification) {
         podPlayer.switchTrack(commandType: .next)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "update"), object: nil)
+    }
+    
+    func prevTrack(note: NSNotification) {
+        podPlayer.switchTrack(commandType: .prev)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "update"), object: nil)
     }
 
+    func playTrack(note: NSNotification) {
+        podPlayer.resumeMusic()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "update"), object: nil)
+    }
+    
+    func pauseTrack(note: NSNotification) {
+        podPlayer.pauseMusic()
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "update"), object: nil)
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
